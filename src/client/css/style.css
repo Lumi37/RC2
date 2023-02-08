@@ -4,9 +4,9 @@
 @import url('containers/bottomLeftContainer.css');
 @import url('containers/bottomRightContainer.css');
 
-
 html{
     font-size: 16px;
+    color: cyan;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 body{
