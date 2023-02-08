@@ -1,3 +1,32 @@
 .upperLeftContainer{
     border: 1px solid cyan;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchItem{
+    width: 50%;
+    background-color: #3e3e3f;
+    display: flex;
+    padding: 0.313rem;
+    border-radius: 0.938rem;
+ 
+}
+#searchBar:focus-visible {
+    outline: none;
+}
+#searchicon{
+    width: 2rem;
+    height: 2rem;
+}
+
+/* Search input */
+#searchBar {
+    width: 70%;
+    border: none;
+    color:rgb(10, 226, 255); 
+    background-color: #3e3e3f;
+    text-align: center;
+    font-size: 1.5rem;
 }
