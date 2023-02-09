@@ -1,0 +1,17 @@
+.tooltip {
+    visibility: visible;
+    text-align: center;
+    color: cyan;
+    font-size: 1.3rem;
+    border-radius: 0.625rem;
+    padding: 0.313rem;
+    width: max-content;
+    background-color: rgb(54, 54, 54);
+    opacity: 0;
+    transition: opacity 0.4s;
+    position: relative;
+    z-index: 1;
+    left: 2%;
+    top: 1rem;
+    user-select: none;
+}

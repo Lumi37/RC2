@@ -1,3 +1,213 @@
+@import url('../tooltip.css');
+
+
 .upperRightContainer{
     border: 1px solid cyan;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#username {
+    height: 2.5rem;
+    width: 15rem;
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    font-family: cursive;
+    border-radius: 0.938rem;
+    background-color: #3e3e3f;
+    color:rgb(10, 226, 255);
+    text-align: center;
+    border: 0.063 solid rgba(18, 213, 219,1);
+}
+#username:focus-visible {
+    outline: none;
+}
+
+.imgUploadContainer:hover .userProfilePicture {
+    opacity: 0.3;
+}
+.imgUploadContainer:hover .middle {
+    opacity: 1;
+}
+.middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 10%;
+    left: 49.7%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+.imgUploadContainer:hover .middle {
+    opacity: 1;
+}
+
+/* .imgUploadContainer {
+    height: min-content;
+} */
+
+#uploadButton {
+    background-color: rgb(73, 70, 70);
+    border-radius: 0.938rem;
+    cursor: pointer;
+    opacity: 1;
+    color: white;
+    font-size: 0.5rem;
+    padding: 0.5rem;
+}
+#uploadButton:active {
+    opacity: 0.6;
+}
+
+
+.userProfilePicture {
+    width: 3.5rem;
+    height: 3.5rem;
+    opacity: 1;
+    display: block;
+    transition: .5s ease;
+    backface-visibility: hidden;
+    margin: 0.625rem;
+    background-color: white;
+    border-radius: 50%;
+    border: 0.063rem solid grey;
+    padding: 0.125rem;
+}
+
+.userProfilePicture:active {
+    opacity: 1;
+    box-shadow: 0.063rem 0.063rem 0.5rem 0.063rem #9e9c9c;
+}
+
+
+#saveButton {
+    width: 3.125rem;
+    height: 3.125rem;
+    margin-top: 1.25rem;
+    margin-left: 0.313rem;
+    background: url('../../images/darkmode/save.png');
+    background-size: 3.125rem;
+    background-position: center;
+    background-color: white;
+    border-radius: 50%;
+    border: 0.063rem solid grey;
+    cursor: pointer;
+    padding: 0.125rem;
+}
+#saveButton:hover {
+    background-color: #f5eded;
+}
+#saveButton:active {
+    opacity: 0.8;
+    box-shadow: 0.063rem 0.063rem 0.5rem 0.063rem #9e9c9c;
+}
+#saveButton:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+#saveButton .tooltip {
+    position: relative;
+    z-index: 1;
+    left: 2.5rem;
+    top: 2.5rem;
+}
+#saveButtonDisabled {
+    width: 3.125rem;
+    height: 3.125rem;
+    margin-top: 1.25rem;
+    margin-left: 0.313rem;
+    /* pointer-events: none; */
+    background: url('images/darkmode/save.png');
+    background-size: 3.125rem;
+    background-position: center;
+    background-color: white;
+    cursor: not-allowed;
+    border-radius: 50%;
+    border: 0.063rem solid grey;
+    opacity: 0.3;
+    padding: 0.125rem;
+}
+
+#editNameButton {
+    width: 3.125rem;
+    height: 3.125rem;
+    margin-top: 1.25rem;
+    margin-left: 0.313rem;
+    background: url('../../images/darkmode/edit.png');
+    background-size: 3.125rem;
+    background-position: center;
+    background-color: white;
+    border-radius: 50%;
+    border: 0.063rem solid grey;
+    cursor: pointer;
+    padding: 0.125rem;
+}
+#editNameButton .tooltip {
+    position: relative;
+    z-index: 1;
+    left: 2.5rem;
+    top: 2.5rem;
+}
+
+#editNameButton:hover .tooltip {
+    opacity: 1;
+}
+
+#editNameButton:hover {
+    background-color: #f5eded;
+}
+
+#editNameButton:active {
+    opacity: 1;
+    box-shadow: 0.063rem 0.063rem 0.5rem 0.063rem #9e9c9c;
+}
+#editNameButtonDisabled {
+    width: 3.125rem;
+    height: 3.125rem;
+    margin-top: 1.25rem;
+    margin-left: 0.313rem;
+    background: url('../../images/darkmode/edit.png');
+    background-size: 3.125rem;
+    background-position: center;
+    background-color: white;
+    border-radius: 50%;
+    border: 0.063rem solid grey;
+    opacity: 0.3;
+    cursor: not-allowed;
+    padding: 0.125rem;
+}
+#darkmode{
+    width: 3.125rem;
+    height: 3.125rem;
+    margin-top: 1.25rem;
+    margin-left: 0.313rem;
+    background: url('../../images/darkmode/lightmode.png');
+    background-size: 3.125rem;
+    background-position: center;
+    background-color: white;
+    border-radius: 50%;
+    border: 0.063rem solid grey;
+    cursor: pointer;
+    padding: 0.125rem;
+}
+.darkmodeDisabled{
+display: none;
+}
+#darkmode:active {
+    opacity: 1;
+    box-shadow: 0.063rem 0.063rem 0.5rem 0.063rem #9e9c9c;
+}
+#darkmode .tooltip {
+    position: relative;
+    z-index: 1;
+    left: 3rem;
+    top: 3rem;
+}
+
+#darkmode:hover .tooltip {
+    opacity: 1;
+}
+
+#darkmode:hover {
+    background-color: #f5eded;
 }
