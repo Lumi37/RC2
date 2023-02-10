@@ -1,6 +1,7 @@
 .tooltip {
     visibility: visible;
     text-align: center;
+  
     color: cyan;
     font-size: 1.3rem;
     border-radius: 0.625rem;
