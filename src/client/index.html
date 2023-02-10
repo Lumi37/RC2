@@ -6,16 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src='javascript/index.js'type="module"></script>
     <link  rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/darkmode/red.png" type="image/x-icon">
     <title>Document</title>
 </head>
 <body>
     <div class="mainContainer">
+
+        <!-- SEARCH BAR -->
         <div class="upperLeftContainer">
             <div class="searchItem">
                 <img id='searchicon'src="images/darkmode/searchicon.png" alt="">
                 <input type="text" id="searchBar" placeholder="Search">
             </div>
         </div>
+
+        <!-- USER PROFILE -->
         <div class="upperRightContainer">
           
             <div class="imgUploadContainer">
@@ -26,7 +31,6 @@
             </div>
             
             <input type="text" id="username" name='name' placeholder="Username">
-            
                 <div id="saveButton">
                     <div class="tooltip">Save</div>
                 </div>
@@ -36,13 +40,18 @@
                 <div id="darkmode"> 
                     <div class="tooltip">Light/Dark-Mode</div>
                 </div>
-            
-                <!-- <div class="imagesalign"></div> -->
         </div>
+
+
+        <!-- FRIEND-GROUP LIST -->
         <div class="bottomLeftContainer">
             <div class="listButtons">
-                <div id="friendsButton"> Friends </div>
-                <div id="groupsButton"> Groups </div> 
+                <div data-flex-item ='1'><div id="friendsButton"> Friends </div></div>
+                <div data-flex-item ='2'><div id="groupsButton"> Groups </div> </div>
+                <div data-flex-item ='3'class="searchItem">
+                    <img id='searchicon'src="images/darkmode/searchicon.png" alt="">
+                    <input type="text" id="searchBar" placeholder="Search">
+                </div>
             </div>
             <div class="friendList">
                 <ul id="friendList">
@@ -97,7 +106,31 @@
                 </ul>
             </div>
         </div>
-        <div class="bottomRightContainer">4</div>
+        <!-- CHAT AREA -->
+        <div class="bottomRightContainer">
+            
+            <div class="chatDisplay">
+                
+            </div>
+            
+            <div class="chatInput">
+                <div class="emoji">
+                    <div id="emoji">
+                        <div class="tooltip"">emojis</div>
+                    </div>
+                </div>
+
+                <textarea type="text" maxlength="200" class="textTypingArea" id="typingArea"
+                placeholder="type your message here."></textarea>
+                
+                <div class="paperAirplane">
+                    <div id="paperAirplane">
+                        <div class="tooltip"">SendText</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 </body>
 </html>

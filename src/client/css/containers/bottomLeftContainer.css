@@ -1,25 +1,78 @@
+@import url('../tooltip.css');
+
 .bottomLeftContainer{
-        border: 1px solid cyan;
-        display: flex;
-        flex-direction: column;
-    }
+    border: 1px solid cyan;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Search input */
+.searchItem{
+    width: 50%;
+    background-color: #3e3e3f;
+    display: flex;
+    padding: 0.313rem;
+    border-radius: 0.938rem;
+ 
+}
+#searchBar:focus-visible {
+    outline: none;
+}
+#searchicon{
+    width: 2rem;
+    height: 2rem;
+}
+#searchBar {
+    width: 70%;
+    border: none;
+    color:rgb(10, 226, 255); 
+    background-color: #3e3e3f;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
 .listButtons{
     background-color: rgb(40, 44, 48);
     display: flex;
     flex-direction: row;
 }
-.listButtons>div{
+/* .listButtons>div[data-flex-item='1']{
+
+} */
+.listButtons>div[data-flex-item='2']{
+    flex:1;
+}
+/* .listButtons>div[data-flex-item='3']{
+
+} */
+#groupsButton{
     background-color: rgb(40, 44, 48); 
     color: cyan;
     border: none;
     cursor: pointer;
     padding: 1rem;
+    width: 3rem;
     transition: all 0.2s ease-in;
 }
-.listButtons>div:hover{
+#groupsButton:hover{
     background-color: #3e3e3f;
 }
-.listButtons>div:active{
+#groupsButton:active{
+    background-color: #9b9b9c;
+}
+#friendsButton{
+    background-color: rgb(40, 44, 48); 
+    color: cyan;
+    border: none;
+    cursor: pointer;
+    width: 3rem;
+    padding: 1rem;
+    transition: all 0.2s ease-in;
+}
+#friendsButton:hover{
+    background-color: #3e3e3f;
+}
+#friendsButton:active{
     background-color: #9b9b9c;
 }
 .groupList{

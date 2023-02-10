@@ -1,3 +1,105 @@
+@import url('../tooltip.css');
+
+
 .bottomRightContainer{
     border: 1px solid cyan;
+    display: flex;
+    flex-direction: column;
+}
+
+.chatDisplay{
+    flex: 6;
+    background-color: rgb(73, 73, 73);
+}
+.chatInput{
+    flex: 1;
+    display: flex;
+    border: 1px solid cyan;
+}
+
+.emoji{
+    background-color:rgb(73, 73, 73);
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+}
+
+#emoji:hover .tooltip {
+    opacity: 1;
+}
+#emoji .tooltip {
+    position: relative;
+    z-index: 1;
+    left: 2.5rem;
+    top: 2.4rem;
+}
+#emoji .tooltip {
+    position: relative;
+    z-index: 1;
+    left: 2.5rem;
+    top: 2.4rem;
+}
+#emoji {
+    background: url('../../images/darkmode/download.png');
+    background-size: 3.125rem;
+    background-position: center;
+    background-color: white;
+    cursor: pointer;
+    width: 3.125rem;
+    height: 3.125rem;
+    border-radius: 50%;
+
+}
+.textTypingArea{
+    background-color: rgb(73, 73, 73);
+    flex:6;
+    color: rgb(10, 226, 255);
+    border: none;
+    font-size: 1.563rem;
+}
+
+.textTypingArea:focus-visible {
+    outline: none;
+}
+
+.textTypingArea::placeholder {
+    font-size: 150%;
+    color: #0594ad;
+    text-align: center;
+}
+
+
+.paperAirplane{
+    background-color: rgb(73, 73, 73);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex:1;
+}
+#paperAirplane:hover {
+    background-color: #f5eded;
+}
+
+#paperAirplane:hover .tooltip {
+    opacity: 1;
+}
+
+#paperAirplane .tooltip {
+    position: relative;
+    z-index: 1;
+    left: -3.125rem;
+    top: 2.4rem;
+}
+
+#paperAirplane {
+    background: url('../../images/darkmode/paperAirplane.png');
+    background-size: 3.125rem;
+    background-position: center;
+    background-color: white;
+    cursor: pointer;
+    width: 3.125rem;
+    height: 3.125rem;
+    border-radius: 50%;
 }
