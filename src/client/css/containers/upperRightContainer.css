@@ -22,7 +22,9 @@
 #username:focus-visible {
     outline: none;
 }
-
+.imgUploadContainer{
+    display: relative;
+}
 .imgUploadContainer:hover .userProfilePicture {
     opacity: 0.3;
 }
@@ -35,6 +37,7 @@
     position: absolute;
     top: 10%;
     left: 49.7%;
+    z-index: 1;
     transform: translate(-50%, -50%);
     text-align: center;
 }
@@ -64,7 +67,7 @@
     width: 3.5rem;
     height: 3.5rem;
     opacity: 1;
-    display: block;
+    display: absolute;
     transition: .5s ease;
     backface-visibility: hidden;
     margin: 0.625rem;
