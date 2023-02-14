@@ -17,7 +17,7 @@
     border: 1px solid cyan;
 }
 
-.emoji{
+.emojis{
     background-color:rgb(73, 73, 73);
     display: flex;
     align-items: center;
@@ -25,22 +25,22 @@
     justify-content: center;
 }
 
-#emoji:hover .tooltip {
+#emojis:hover .tooltip {
     opacity: 1;
 }
-#emoji .tooltip {
+#emojis .tooltip {
     position: relative;
     z-index: 1;
     left: 2.5rem;
     top: 2.4rem;
 }
-#emoji .tooltip {
+#emojis .tooltip {
     position: relative;
     z-index: 1;
     left: 2.5rem;
     top: 2.4rem;
 }
-#emoji {
+#emojis {
     background: url('../../images/darkmode/download.png');
     background-size: 3.125rem;
     background-position: center;
@@ -49,7 +49,32 @@
     width: 3.125rem;
     height: 3.125rem;
     border-radius: 50%;
-
+}
+.emojiBox{
+    margin: 0;
+    visibility: hidden;
+    text-align: center;
+    color: cyan;
+    font-size: 1.3rem;
+    border-radius: 0.625rem;
+    padding: 0.313rem;
+    word-wrap: break-word;
+    text-align: left;
+    height: 20rem;
+    width: 20rem;
+    display: flex;
+    background-color: rgb(54, 54, 54);
+    opacity: 100;
+    transition: opacity 0.4s;
+    position: relative;
+    z-index: 1;
+    left: 1rem;
+    top: -21rem;
+    flex-wrap: wrap;
+}
+.emoji{
+    cursor: pointer;
+    
 }
 .textTypingArea{
     background-color: rgb(73, 73, 73);

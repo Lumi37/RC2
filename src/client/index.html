@@ -14,10 +14,10 @@
 
         <!-- SEARCH BAR -->
         <div class="upperLeftContainer">
-            <div class="searchItem">
+            <!-- <div class="searchItem">
                 <img id='searchicon'src="images/darkmode/searchicon.png" alt="">
                 <input type="text" id="searchBar" placeholder="Search">
-            </div>
+            </div> -->
         </div>
 
         <!-- USER PROFILE -->
@@ -114,9 +114,10 @@
             </div>
             
             <div class="chatInput">
-                <div class="emoji">
-                    <div id="emoji">
+                <div class="emojis">
+                    <div id="emojis">
                         <div class="tooltip"">emojis</div>
+                        <div class="emojiBox"></div>
                     </div>
                 </div>
 
@@ -125,12 +126,21 @@
                 
                 <div class="paperAirplane">
                     <div id="paperAirplane">
-                        <div class="tooltip"">SendText</div>
+                        <div class="tooltip">SendText</div>
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
+
+        <!-- UPLOAD FORM (INVISIBLE) -->
+    <form ref='uploadForm' id='uploadForm' action='http://localhost:3000/' method='post' enctype="multipart/form-data" accept="images/*">
+                                        <input type="text" name="id" id="userID">
+                                        <input type="file" name="sampleFile" id="fileupload">
+                                        <input type="text" id="hiddenusername" name='name' placeholder="Username">
+                                        <input type='submit' id='submitFile' value='upload'>
+                                        </form>
+                                    </div>
 </body>
 </html>

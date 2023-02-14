@@ -25,3 +25,7 @@ ul {
  button{
     display: inline-block;
  }
+
+ #uploadForm{
+    display: none;
+ }
