@@ -131,7 +131,7 @@
     padding: 0.125rem;
 }
 
-#editNameButton {
+#editButton {
     width: 3.125rem;
     height: 3.125rem;
     margin-top: 1.25rem;
@@ -145,26 +145,26 @@
     cursor: pointer;
     padding: 0.125rem;
 }
-#editNameButton .tooltip {
+#editButton .tooltip {
     position: relative;
     z-index: 1;
     left: 2.5rem;
     top: 2.5rem;
 }
 
-#editNameButton:hover .tooltip {
+#editButton:hover .tooltip {
     opacity: 1;
 }
 
-#editNameButton:hover {
+#editButton:hover {
     background-color: #f5eded;
 }
 
-#editNameButton:active {
+#editButton:active {
     opacity: 1;
     box-shadow: 0.063rem 0.063rem 0.5rem 0.063rem #9e9c9c;
 }
-#editNameButtonDisabled {
+#editButtonDisabled {
     width: 3.125rem;
     height: 3.125rem;
     margin-top: 1.25rem;

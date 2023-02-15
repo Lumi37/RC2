@@ -14,6 +14,11 @@ app.use(express.static(`${__dirname}../client`))
 
 io.on('connection',socket=>{
     console.log(`user connected. : ${socket}`)
+    socket.on('message',(obj)=>{
+        console.log(obj)
+    socket.emit('message',obj)
+    socket.broadcast.emit('message',obj)
+     })
     socket.on('disconnect',()=>{
         console.log('user disconnected')
     })
