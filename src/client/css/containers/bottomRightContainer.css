@@ -11,6 +11,37 @@
     flex: 6;
     background-color: rgb(73, 73, 73);
 }
+.usertextWrap{
+    display: flex;
+    align-items:baseline;
+    flex-direction: row;
+}
+.otherUserTextWrap{
+    display: flex;
+    align-items:baseline;
+    flex-direction: row-reverse;
+}
+.textUserIcon{
+    width: 4.375rem;
+    height: 4.375rem;
+    margin: 0.625rem;
+    background-color: white;
+    border-radius: 50%;
+    border: 0.063rem solid grey;
+    cursor: pointer;
+    padding: 0.125rem;
+}
+.userText{
+    background-color: black;
+    font-size: 1.5rem;
+    height:3rem;
+    /* width: minmax(min-content,30rem); */
+    width:min-content;
+    padding-top:1rem;
+    padding-left:0.5rem;
+    padding-right: 0.5rem;
+    border-radius: 15px;
+}
 .chatInput{
     flex: 1;
     display: flex;
