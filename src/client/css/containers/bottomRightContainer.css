@@ -11,7 +11,7 @@
     flex: 6;
     background-color: rgb(73, 73, 73);
 }
-.usertextWrap{
+.userTextWrap{
     display: flex;
     align-items:baseline;
     flex-direction: row;
