@@ -5,13 +5,13 @@ export function incomingTextMessage(msg){
         chatDisplay.innerHTML += `
         <div class="userTextWrap">
             <img class="textUserIcon" src="images/darkmode/default.png" alt="images/darkmode/default.png">
-            <div class="userText">${msg.message}</div>
+            <div class="userText">${msg.textMessage}</div>
         </div>`
     else
     chatDisplay.innerHTML += `
     <div class="otherUserTextWrap">
         <img class="textUserIcon" src="images/darkmode/default.png" alt="images/darkmode/default.png">
-        <div class="userText">${msg.message}</div>
+        <div class="userText">${msg.textMessage}</div>
     </div>`
         
     

@@ -51,7 +51,7 @@ socket.on('message',res=>{
 
     const responseType = identifyResponseByType(res.type)
     if(responseType === 'chat-message')
-        incomingTextMessage(res.textMessage)
+        incomingTextMessage(res)
     // if(responseType === 'list')
     // if(responseType === 'history')
 })

@@ -19,6 +19,7 @@ io.on('connection',socket=>{
     socket.on('message',(userRequest)=>{
         console.log(userRequest)
         let requestType = identifyTypeOfRequest(userRequest.type)
+        console.log('requestType')
         if (requestType === 'chat-message'){
             socket.emit('message',userRequest)
             socket.broadcast.emit('message',userRequest)
