@@ -4,6 +4,8 @@ export function identifyTypeOfRequest(type){
             return 'connection'
         case 'chat-message':
             return 'chat-message'
+        case 'name':
+            return 'name'
         case 'list':
             return 'list'
         case 'history':

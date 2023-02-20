@@ -31,11 +31,10 @@ saveButton.addEventListener('click',e=>{
     if(saveButton.id=='saveButton'){
         setNameOnLocalStorage()
         if(username.value){
-            socket.emit('message',{name:username.value})
+            socket.emit('message',{name:username.value, id:getUserIdFromLocalStorage(), type:'name'})
             saveButton.id = 'saveButtonDisabled'
         }
     }
-    // if(username.value)
         
 })
 
@@ -45,7 +44,7 @@ username.addEventListener('keypress',e=>{
         if(saveButton.id=='saveButton'){
             if(username.value){
                 setNameOnLocalStorage()
-                socket.emit('message',{name:username.value})
+                socket.emit('message',{name:username.value, id:getUserIdFromLocalStorage(), type:'name'})
                 saveButton.id = 'saveButtonDisabled'
             }
         }
@@ -55,11 +54,10 @@ username.addEventListener('keypress',e=>{
 })
 
 // ENABLING NAME EDITING
-// editButton.addEventListener('click',e=>{
-//     if(username.value)
-//         username.value = 'sd'
+editButton.addEventListener('click',e=>{
+    saveButton.id = 'saveButton'
 
-// })
+})
 
 friendsButton.addEventListener('click',e=>{
     groupList.style.display = 'none'

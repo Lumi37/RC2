@@ -30,7 +30,7 @@ io.on('connection',socket=>{
             const listIndex = userList.findIndex(user => user.id === socket.userID)
             userList[listIndex].connectionStatus = 'online'
         }
-        if(requestType === 'change-name'){
+        if(requestType === 'name'){
             identifyUserById(userRequest.name, userRequest.id)
         }
         if (requestType === 'chat-message'){
