@@ -1,5 +1,7 @@
 export function identifyTypeOfRequest(type){
     switch(type){
+        case 'connection':
+            return 'connection'
         case 'chat-message':
             return 'chat-message'
         case 'list':

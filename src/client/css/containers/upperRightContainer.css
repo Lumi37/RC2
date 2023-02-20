@@ -120,7 +120,7 @@
     margin-top: 1.25rem;
     margin-left: 0.313rem;
     /* pointer-events: none; */
-    background: url('images/darkmode/save.png');
+    background: url('../../images/darkmode/save.png');
     background-size: 3.125rem;
     background-position: center;
     background-color: white;
@@ -152,7 +152,7 @@
     top: 2.5rem;
 }
 
-#editButton:hover .tooltip {
+#editButton:hover .tooltip {x
     opacity: 1;
 }
 

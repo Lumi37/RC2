@@ -10,8 +10,8 @@ export function outgoingTextMessage(){
     textTypingArea.value = ''
     
     // if(type === 'list')
-    //     //producelist
+    //     //request producelist
         
     // if(type === 'history')
-    //     //producehistory
+    //     //request producehistory
 }

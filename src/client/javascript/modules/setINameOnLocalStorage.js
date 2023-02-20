@@ -2,9 +2,6 @@
 import { socket, username } from "../index.js";
 import { userIdGenerator } from "./idGen.js";
 
-export function setInfoOnLocalStorage(){
+export function setNameOnLocalStorage(){
     localStorage.setItem('name', username.value)
-    if(!localStorage.id)
-    localStorage.setItem('id',userIdGenerator())
-    //socket.emit('message')
 }
