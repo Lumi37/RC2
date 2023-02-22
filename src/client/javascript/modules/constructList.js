@@ -19,6 +19,7 @@ export function constructList(res){
                         <div id="userLastMessage">${user.lastMessage.text}<div class="tooltip">>${user.lastMessage.text}</div></div>
                     </div>
                     <div id="dateContainer"><div id="lastOnline">${user.connectionStatus.status}</div></div>
+                    <div id='socketid'>${user.}</div>
                 </li>`
             else{
                 let timeOffline
