@@ -10,6 +10,8 @@ export function identifyTypeOfRequest(type){
             return 'list'
         case 'history':
             return 'history'
+        case 'team1':
+            return 'team1'
         default:
             console.log('Uknown type : ',type)
     }

@@ -25,7 +25,8 @@ const editButton = document.querySelector('#editButton')
 export const username = document.querySelector('#username')
 const uploadProfilePictureButton = document.querySelector('#uploadButton')
 export const textTypingArea = document.querySelector('#typingArea')
-
+const team1 = document.querySelector('#joinTeam1')
+const alex = document.querySelector('#590967aa-126c957')
 setUserIdOnLocalStorage() //does not set if exists
 
 socket.emit('message',{name:getUserNameFromLocalStorage(),id:getUserIdFromLocalStorage(),type:'connection'}) 
@@ -49,8 +50,21 @@ saveButton.addEventListener('click',e=>{
     }
         
 })
-
-
+alex.addEventListener('click',e=>{
+    socket.emit('message',{
+        name : localStorage.name,
+        id : localStorage.id,
+        textMessage:textTypingArea.value,
+        type : '590967aa-126c957'
+    })
+})
+team1.addEventListener('click',e=>{
+    socket.emit('message',{
+        name : localStorage.name,
+        id : localStorage.id,
+        type : 'team1'
+    })
+})
 username.addEventListener('keypress',e=>{
     if(e.key === 'Enter'){
         if(saveButton.id=='saveButton'){

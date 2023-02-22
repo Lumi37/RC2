@@ -28,7 +28,11 @@ app.use(express.static(`${__dirname}../client`))
 export const  userList = [{
     name:'',
     id:'', 
-    connectionStatus:{ status:'offline', date:{years:0, months:0, days:0, hours:0, minutes:0}, offlineDifference:{years:0, months:0, days:0, hours:0, minutes:0} }, 
+    connectionStatus:{
+        status:'offline',
+        date:{ years:0, months:0, days:0, hours:0, minutes:0 },
+        offlineDifference:{ years:0, months:0, days:0, hours:0, minutes:0 }
+    }, 
     lastMessage:{ text:'', date:'' },
     profilePicturePathname:''
 }]
@@ -37,8 +41,8 @@ export const  userList = [{
 io.on('connection',socket=>{
     //socket.broadcast.emit(`'message',{type:'new-user'}`)
     //socket.broadcast.emit('message',{type:list})
-    //socket.emit('message', {type:history})
-    console.log(socket.id)
+    // //socket.emit('message', {type:history})
+    // console.log(socket.id)
     socket.on('message',(userRequest)=>{
         console.log(userRequest)
         let requestType = identifyTypeOfRequest(userRequest.type)
@@ -70,9 +74,16 @@ io.on('connection',socket=>{
         }
         if(requestType === 'list'){
             disconnectedTimeUpdate()
-            socket.emit('message',{list:userList,type:'list'})
-            socket.broadcast.emit('message',{list:userList,type:'list'})
+            userList.socketId = socket.id
+            socket.emit('message',{list:userList,type:'list', socketId:socket.id})
+            socket.broadcast.emit('message',{list:userList,type:'list', socketId:socket.id})
+        }if(requestType === 'team1'){
+            socket.join('team1')
+            socket.to('team1').emit('message',{textMessage:`hello Mr.${userRequest.name} welcome to team1`,type:'chat-message' ,room:'team1'})
         }
+        // if(requestType==='590967aa-126c957'){
+        //     socket.to('590967aa-126c957')
+        // }
      })
     socket.on('disconnect',()=>{
         const listIndex = userList.findIndex(user =>user.id === socket.userID) //finding userList index by relative (custom)socket id
@@ -82,13 +93,13 @@ io.on('connection',socket=>{
             disconnectedTimeUpdate()
         }
             
-        socket.emit('message',{list:userList,type:'list'})
-        socket.broadcast.emit('message',{list:userList,type:'list'})
+        socket.emit('message',{list:userList,type:'list', socketId:'socket.id'})
+        socket.broadcast.emit('message',{list:userList,type:'list', socketId:'socket.id'})
         //socket.broadcast.emit('message',{type:list} disconnected user
     })
 })
 
-
+// io.to('team1').emit('message',{textMessage:'hello team1',type:'message'})
 
 
 
