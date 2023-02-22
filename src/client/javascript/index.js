@@ -1,19 +1,25 @@
 // const __dirname = new URL('.', import.meta.url).pathname
 import { outgoingTextMessage } from "./modules/outgoingTextMessage.js"
-import { userIdGenerator } from "./modules/idGen.js"
 import { identifyResponseByType } from "./modules/identifyResponseByType.js"
 import { incomingTextMessage } from "./modules/incomingTextMessage.js"
 import { setNameOnLocalStorage } from "./modules/setINameOnLocalStorage.js"
 import { setUserIdOnLocalStorage } from "./modules/setUserIdOnLocalStorage.js"
 import { getUserNameFromLocalStorage } from "./modules/getUserNameFromLocalStorage.js"
 import { getUserIdFromLocalStorage } from "./modules/getUserIdFromLocalStorage.js"
-import { newConnection } from "./modules/newConnection.js"
+import { constructList } from "./modules/constructList.js"
 
 export const socket = io()
+//  hidden form 
+export const hiddenIdField = document.querySelector('#userID')
+const fileUpload = document.querySelector('#fileupload')
+export const hiddenUsernameField = document.querySelector('#hiddenusername')
+const fileSubmitButton = document.querySelector('#submitFile')
+const uploadProfPicButton = document.querySelector('#uploadButton')
+const darkmode = document.querySelector('#darkmode')
 const friendsButton = document.querySelector('#friendsButton')
 const groupsButton = document.querySelector('#groupsButton')
-const friendList = document.querySelector('#friendList')
-const groupList = document.querySelector('#groupList')
+export const friendList = document.querySelector('#friendList')
+export const groupList = document.querySelector('#groupList')
 const saveButton = document.querySelector('#saveButton')
 const editButton = document.querySelector('#editButton')
 export const username = document.querySelector('#username')
@@ -23,14 +29,20 @@ export const textTypingArea = document.querySelector('#typingArea')
 setUserIdOnLocalStorage() //does not set if exists
 
 socket.emit('message',{name:getUserNameFromLocalStorage(),id:getUserIdFromLocalStorage(),type:'connection'}) 
-
-
-
+darkmode.addEventListener('click',e=>{
+    socket.emit('message',{type:'list'})
+})
+//PROFILE UPLOAD
+uploadProfPicButton.addEventListener('click',e=>{
+    fileUpload.click()
+})
+fileUpload.onchange = ()=> fileSubmitButton.click()
 // SAVING NAME
 saveButton.addEventListener('click',e=>{
     if(saveButton.id=='saveButton'){
         setNameOnLocalStorage()
         if(username.value){
+            hiddenUsernameField.value = username.value
             socket.emit('message',{name:username.value, id:getUserIdFromLocalStorage(), type:'name'})
             saveButton.id = 'saveButtonDisabled'
         }
@@ -44,13 +56,12 @@ username.addEventListener('keypress',e=>{
         if(saveButton.id=='saveButton'){
             if(username.value){
                 setNameOnLocalStorage()
+                hiddenUsernameField.value = username.value
                 socket.emit('message',{name:username.value, id:getUserIdFromLocalStorage(), type:'name'})
                 saveButton.id = 'saveButtonDisabled'
             }
         }
     }
-        
-          
 })
 
 // ENABLING NAME EDITING
@@ -78,10 +89,12 @@ textTypingArea.addEventListener('keyup',e=>{
 
 
 socket.on('message',res=>{
-
     const responseType = identifyResponseByType(res.type)
-    if(responseType === 'connection')newConnection(res)
+    console.log(res.type)
+    if(responseType === 'connection')
+    console.log('')
     if(responseType === 'chat-message')incomingTextMessage(res)
+    if(responseType === 'list')constructList(res)
     // if(responseType === 'list')
     // if(responseType === 'history')
 })

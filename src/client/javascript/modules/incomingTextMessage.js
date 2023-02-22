@@ -10,7 +10,7 @@ export function incomingTextMessage(msg){
     else
     chatDisplay.innerHTML += `
     <div class="otherUserTextWrap">
-        <img class="textUserIcon" src="images/darkmode/default.png" alt="images/darkmode/default.png">
+        <img class="textUserIcon" src=${msg.profilePicturePathname} alt="images/darkmode/default.png">
         <div class="userText">${msg.textMessage}</div>
     </div>`
         

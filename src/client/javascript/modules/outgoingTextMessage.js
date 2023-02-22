@@ -8,10 +8,4 @@ export function outgoingTextMessage(){
         type : 'chat-message'
     })
     textTypingArea.value = ''
-    
-    // if(type === 'list')
-    //     //request producelist
-        
-    // if(type === 'history')
-    //     //request producehistory
 }
