@@ -7,19 +7,19 @@ export function constructList(res){
     list.shift() //first arr cell always blank
     list.forEach(user=>{
         if(user.id !== localStorage.id){
+            console.log('user')
             if(user.connectionStatus.status==='online')
                 friendList.innerHTML+=`
-                <li class="listItemsContainer">  
+                <li class="listItemsContainer" data-socketId='${user.socketId}'>  
                     <div id="imgContainerList">
                         <img src=${user.profilePicturePathname} id="listUserIcon" alt=""> 
                         <div id=${user.connectionStatus.status}></div>
                     </div>
                     <div class="listNameMessageContainer">
-                        <div id="userListName">${user.name}<div class="tooltip">Kostas</div></div>
-                        <div id="userLastMessage">${user.lastMessage.text}<div class="tooltip">>${user.lastMessage.text}</div></div>
+                        <div id="userListName">${user.name}<div class="tooltip">${user.name}</div></div>
+                        <div id="userLastMessage">${user.lastMessage.text}<div class="tooltip">${user.lastMessage.text}</div></div>
                     </div>
                     <div id="dateContainer"><div id="lastOnline">${user.connectionStatus.status}</div></div>
-                    <div id='socketid'>${user.}</div>
                 </li>`
             else{
                 let timeOffline

@@ -1,11 +1,13 @@
-import { socket,textTypingArea } from "../index.js";
+import { socket,textTypingArea,selectedChatRoom } from "../index.js";
 
 export function outgoingTextMessage(){
     socket.emit('message',{
         name : localStorage.name,
         id : localStorage.id,
         textMessage : textTypingArea.value,
-        type : 'chat-message'
+        type : 'chat-message',
+        messageTo:selectedChatRoom.innerHTML,
+        messageFrom:localStorage.socketId
     })
     textTypingArea.value = ''
 }

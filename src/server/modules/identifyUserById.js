@@ -21,7 +21,8 @@ export function identifyUserById(name,id){
                 id:id,
                 connectionStatus:{ status:'offline', date:{years:0, months:0, days:0, hours:0, minutes:0}, offlineDifference:{years:0, months:0, days:0, hours:0, minutes:0} },
                 lastMessage:{ text:'', date:'' },
-                profilePicturePathname:`images/darkmode/default.png`
+                profilePicturePathname:`images/darkmode/default.png`,
+                socketId:''
             })
             console.log(`New User \nNAME: ${name}\nID: ${id}`)
         }
@@ -31,7 +32,8 @@ export function identifyUserById(name,id){
                 id:id,
                 connectionStatus:{ status:'offline', date:{years:0, months:0, days:0, hours:0, minutes:0}, offlineDifference:{years:0, months:0, days:0, hours:0, minutes:0} },
                 lastMessage:{ text:'', date:'' },
-                profilePicturePathname:`images/darkmode/default.png`
+                profilePicturePathname:`images/darkmode/default.png`,
+                socketId:''
 
             })
             console.log(`New User \nNAME: unnamed\nID: ${id}`)

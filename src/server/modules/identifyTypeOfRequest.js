@@ -10,6 +10,8 @@ export function identifyTypeOfRequest(type){
             return 'list'
         case 'history':
             return 'history'
+        case 'One:One convo':
+            return 'One:One convo'
         case 'team1':
             return 'team1'
         default:

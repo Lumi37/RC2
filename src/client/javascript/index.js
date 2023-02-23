@@ -7,6 +7,7 @@ import { setUserIdOnLocalStorage } from "./modules/setUserIdOnLocalStorage.js"
 import { getUserNameFromLocalStorage } from "./modules/getUserNameFromLocalStorage.js"
 import { getUserIdFromLocalStorage } from "./modules/getUserIdFromLocalStorage.js"
 import { constructList } from "./modules/constructList.js"
+import { UserSocketIdToLocalStorage } from "./modules/UserSocketIdToLocalStorage.js"
 
 export const socket = io()
 //  hidden form 
@@ -25,8 +26,8 @@ const editButton = document.querySelector('#editButton')
 export const username = document.querySelector('#username')
 const uploadProfilePictureButton = document.querySelector('#uploadButton')
 export const textTypingArea = document.querySelector('#typingArea')
+export const selectedChatRoom = document.querySelector('#selectedChatRoom')
 const team1 = document.querySelector('#joinTeam1')
-const alex = document.querySelector('#590967aa-126c957')
 setUserIdOnLocalStorage() //does not set if exists
 
 socket.emit('message',{name:getUserNameFromLocalStorage(),id:getUserIdFromLocalStorage(),type:'connection'}) 
@@ -50,14 +51,16 @@ saveButton.addEventListener('click',e=>{
     }
         
 })
-alex.addEventListener('click',e=>{
-    socket.emit('message',{
-        name : localStorage.name,
-        id : localStorage.id,
-        textMessage:textTypingArea.value,
-        type : '590967aa-126c957'
-    })
+// document.querySelectorAll('.listNameMessageContainer').addEventListener('click',e=>{
+//     console.log(e.currentTarget)
+// })
+friendList.addEventListener('click',e=>{
+    //console.log(e.target.closest('li[data-socketId]').dataset.socketid)
+    //createnewchatinhtml
+    socket.emit('message',{type:'One:One convo',mainUserSocketId:localStorage.socketId, otherUserSocketId:e.target.closest('li[data-socketId]').dataset.socketid})
+    selectedChatRoom.innerHTML = e.target.closest('li[data-socketId]').dataset.socketid
 })
+
 team1.addEventListener('click',e=>{
     socket.emit('message',{
         name : localStorage.name,
@@ -65,6 +68,7 @@ team1.addEventListener('click',e=>{
         type : 'team1'
     })
 })
+
 username.addEventListener('keypress',e=>{
     if(e.key === 'Enter'){
         if(saveButton.id=='saveButton'){
@@ -105,10 +109,9 @@ textTypingArea.addEventListener('keyup',e=>{
 socket.on('message',res=>{
     const responseType = identifyResponseByType(res.type)
     console.log(res.type)
-    if(responseType === 'connection')
-    console.log('')
-    if(responseType === 'chat-message')incomingTextMessage(res)
-    if(responseType === 'list')constructList(res)
+    if(responseType === 'connection') UserSocketIdToLocalStorage(res.socketId)
+    if(responseType === 'chat-message') incomingTextMessage(res)
+    if(responseType === 'list') constructList(res)
     // if(responseType === 'list')
     // if(responseType === 'history')
 })

@@ -34,7 +34,8 @@ export const  userList = [{
         offlineDifference:{ years:0, months:0, days:0, hours:0, minutes:0 }
     }, 
     lastMessage:{ text:'', date:'' },
-    profilePicturePathname:''
+    profilePicturePathname:'',
+    socketId:''
 }]
 
 
@@ -56,10 +57,12 @@ io.on('connection',socket=>{
            try {
                 userList[listIndex].connectionStatus.status = 'online'
                 userList[listIndex].connectionStatus.date = ''
+                userList[listIndex].socketId = socket.id
 
            } catch (error) {
                 console.log(error)
            }
+           socket.emit('message',{type:'connection',socketId:socket.id})
            socket.broadcast.emit('message',{list:userList,type:'list'})
         }
         if(requestType === 'name'){
@@ -69,21 +72,25 @@ io.on('connection',socket=>{
             const listIndex = userList.findIndex(user => user.id === socket.userID)
             logLastSentMessage(listIndex, userRequest.textMessage)
             userRequest.profilePicturePathname = userList[listIndex].profilePicturePathname
-            socket.emit('message',userRequest) 
-            socket.broadcast.emit('message',userRequest)
+            if(userRequest.messageTo){
+                socket.to(userRequest.messageTo).emit('message',userRequest)
+            }else{
+                socket.emit('message',userRequest) 
+                socket.broadcast.emit('message',userRequest)
+            }
+                
         }
         if(requestType === 'list'){
             disconnectedTimeUpdate()
             userList.socketId = socket.id
-            socket.emit('message',{list:userList,type:'list', socketId:socket.id})
-            socket.broadcast.emit('message',{list:userList,type:'list', socketId:socket.id})
+            socket.emit('message',{list:userList,type:'list' })
+            socket.broadcast.emit('message',{list:userList,type:'list'})
         }if(requestType === 'team1'){
             socket.join('team1')
             socket.to('team1').emit('message',{textMessage:`hello Mr.${userRequest.name} welcome to team1`,type:'chat-message' ,room:'team1'})
         }
-        // if(requestType==='590967aa-126c957'){
-        //     socket.to('590967aa-126c957')
-        // }
+        if(requestType === 'One:One convo')
+            socket.join(userRequest.otherUserSocketId)
      })
     socket.on('disconnect',()=>{
         const listIndex = userList.findIndex(user =>user.id === socket.userID) //finding userList index by relative (custom)socket id
@@ -91,10 +98,10 @@ io.on('connection',socket=>{
             userList[listIndex].connectionStatus.status = 'offline'
             userList[listIndex].connectionStatus.date = disconnectTimeCapture()
             disconnectedTimeUpdate()
+            userList[listIndex].socketId=''
         }
-            
-        socket.emit('message',{list:userList,type:'list', socketId:'socket.id'})
-        socket.broadcast.emit('message',{list:userList,type:'list', socketId:'socket.id'})
+        socket.emit('message',{list:userList,type:'list'})
+        socket.broadcast.emit('message',{list:userList,type:'list'})
         //socket.broadcast.emit('message',{type:list} disconnected user
     })
 })
