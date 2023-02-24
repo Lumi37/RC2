@@ -1,6 +1,7 @@
 
 const chatDisplay = document.querySelector('#chatDisplay')
 export function incomingTextMessage(msg){
+    console.log(msg)
    if(localStorage.id === msg.id)
         chatDisplay.innerHTML += `
         <div class="userTextWrap">

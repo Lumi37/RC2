@@ -7,7 +7,6 @@ export function constructList(res){
     list.shift() //first arr cell always blank
     list.forEach(user=>{
         if(user.id !== localStorage.id){
-            console.log('user')
             if(user.connectionStatus.status==='online')
                 friendList.innerHTML+=`
                 <li class="listItemsContainer" data-socketId='${user.socketId}'>  
@@ -22,6 +21,7 @@ export function constructList(res){
                     <div id="dateContainer"><div id="lastOnline">${user.connectionStatus.status}</div></div>
                 </li>`
             else{
+                //TIME OFFLINE
                 let timeOffline
                 if(user.connectionStatus.offlineDifference.years > 0)
                     timeOffline = String(user.connectionStatus.offlineDifference.years) + ' year/s'
