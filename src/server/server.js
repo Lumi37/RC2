@@ -9,6 +9,7 @@ import { identifyUserById } from './modules/identifyUserById.js'
 import { handleUploadedFile } from './modules/handleUploadedFile.js'
 import { disconnectTimeCapture } from './modules/disconnectTimeCapture.js'
 import {disconnectedTimeUpdate} from './modules/disconnectedTimeUpdate.js'
+import { refreshListOnAllClients } from './modules/refreshListOnAllClient.js'
 
 const app = express()
 const server = http.createServer(app)
@@ -40,6 +41,13 @@ export const  userList = [{
 
 
 io.on('connection',socket=>{
+    const users = [];
+    for (let [id, socket] of io.of("/").sockets) {
+      users.push({
+        userID: id,
+      });
+      users.forEach(user=>{console.log(user.id)})
+    }
     //socket.broadcast.emit(`'message',{type:'new-user'}`)
     //socket.broadcast.emit('message',{type:list})
     // //socket.emit('message', {type:history})
@@ -72,8 +80,9 @@ io.on('connection',socket=>{
             const listIndex = userList.findIndex(user => user.id === socket.userID)
             logLastSentMessage(listIndex, userRequest.textMessage)
             userRequest.profilePicturePathname = userList[listIndex].profilePicturePathname
+            refreshListOnAllClients(socket)
             if(userRequest.messageTo){
-                socket.to(userRequest.messageTo).emit('message',userRequest)
+                socket.to(userRequest.messageTo).to(userRequest.messageFrom).emit('message',userRequest)
             }else{
                 socket.emit('message',userRequest) 
                 socket.broadcast.emit('message',userRequest)
@@ -83,14 +92,15 @@ io.on('connection',socket=>{
         if(requestType === 'list'){
             disconnectedTimeUpdate()
             userList.socketId = socket.id
-            socket.emit('message',{list:userList,type:'list' })
-            socket.broadcast.emit('message',{list:userList,type:'list'})
+            refreshListOnAllClients(socket)
         }if(requestType === 'team1'){
             socket.join('team1')
             socket.to('team1').emit('message',{textMessage:`hello Mr.${userRequest.name} welcome to team1`,type:'chat-message' ,room:'team1'})
         }
-        if(requestType === 'One:One convo')
+        if(requestType === 'One:One convo'){
             socket.join(userRequest.otherUserSocketId)
+            socket.join(userRequest.mainUserSocketId)
+        }
      })
     socket.on('disconnect',()=>{
         const listIndex = userList.findIndex(user =>user.id === socket.userID) //finding userList index by relative (custom)socket id
@@ -100,8 +110,7 @@ io.on('connection',socket=>{
             disconnectedTimeUpdate()
             userList[listIndex].socketId=''
         }
-        socket.emit('message',{list:userList,type:'list'})
-        socket.broadcast.emit('message',{list:userList,type:'list'})
+        refreshListOnAllClients(socket)
         //socket.broadcast.emit('message',{type:list} disconnected user
     })
 })
