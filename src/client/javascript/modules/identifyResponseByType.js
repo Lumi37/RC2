@@ -8,6 +8,8 @@ export function identifyResponseByType(type){
             return 'list'
         case 'history':
             return 'history'
+        case 'selectedRoom':
+            return 'selectedRoom'
         default:
             console.log('Unknown type : ',type)
     }

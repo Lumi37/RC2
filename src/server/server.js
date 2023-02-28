@@ -26,7 +26,7 @@ app.post('/',function(req,res){
 })
 
 app.use(express.static(`${__dirname}../client`))
-export const  userList = [{
+export let  userList = [{
     name:'',
     id:'', 
     connectionStatus:{
@@ -38,16 +38,18 @@ export const  userList = [{
     profilePicturePathname:'',
     socketId:''
 }]
+let oneToOneRooms= []
+let roomIndex = 0
 
 
 io.on('connection',socket=>{
-    const users = [];
-    for (let [id, socket] of io.of("/").sockets) {
-      users.push({
-        userID: id,
-      });
-      users.forEach(user=>{console.log(user.id)})
-    }
+    // const users = [];
+    // for (let [id, socket] of io.of("/").sockets) {
+    //   users.push({
+    //     userID: id,
+    //   });
+    //   users.forEach(user=>{console.log(user.id)})
+    // }
     //socket.broadcast.emit(`'message',{type:'new-user'}`)
     //socket.broadcast.emit('message',{type:list})
     // //socket.emit('message', {type:history})
@@ -82,7 +84,8 @@ io.on('connection',socket=>{
             userRequest.profilePicturePathname = userList[listIndex].profilePicturePathname
             refreshListOnAllClients(socket)
             if(userRequest.messageTo){
-                socket.to(userRequest.messageTo).to(userRequest.messageFrom).emit('message',userRequest)
+                console.log('drown ',userRequest.messageTo)
+                socket.to(userRequest.messageTo).emit('message',userRequest)
             }else{
                 socket.emit('message',userRequest) 
                 socket.broadcast.emit('message',userRequest)
@@ -98,8 +101,33 @@ io.on('connection',socket=>{
             socket.to('team1').emit('message',{textMessage:`hello Mr.${userRequest.name} welcome to team1`,type:'chat-message' ,room:'team1'})
         }
         if(requestType === 'One:One convo'){
-            socket.join(userRequest.otherUserSocketId)
-            socket.join(userRequest.mainUserSocketId)
+            const listIndex = userList.findIndex(user => user.id === socket.userID)
+            let privateRoomName 
+            console.log('U-->',userRequest.userId)
+            console.log('O-->',userRequest.otherUserId)
+            console.log(oneToOneRooms.includes(userRequest.userId+':'+userRequest.otherUserId),'\n*option 1: ',privateRoomName)
+            console.log(oneToOneRooms.includes(userRequest.otherUserId+':'+userRequest.userId),'\n*option 2: ',privateRoomName)
+            if(oneToOneRooms.filter(e=> e.room === userRequest.userId+':'+userRequest.otherUserId).length>0){
+                privateRoomName = userRequest.userId+':'+userRequest.otherUserId
+                console.log('option 1: ',privateRoomName)
+            }
+            else if(oneToOneRooms.filter(e=> e.room === userRequest.otherUserId+':'+userRequest.userId).length>0) {
+                privateRoomName = userRequest.otherUserId+':'+userRequest.userId
+                console.log('option 2: ',privateRoomName)
+            }
+            else{
+                privateRoomName = userRequest.userId+':'+userRequest.otherUserId
+                oneToOneRooms.push({room:privateRoomName,receivers:[ userRequest.userId, userRequest.otherUserId]})
+                console.log('option 3: ',privateRoomName)
+            }
+            socket.join(privateRoomName)
+            socket.emit('message',{room:privateRoomName,type:'selectedRoom'})
+            console.log('REGISTERED ROOMS')
+            oneToOneRooms.forEach((e)=>{console.log(e)})
+            console.log('nigger',oneToOneRooms.filter(e=>{
+                e.room === privateRoomName
+            }))
+            //socket.join(userRequest.mainUserSocketId)
         }
      })
     socket.on('disconnect',()=>{

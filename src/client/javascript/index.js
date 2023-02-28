@@ -8,13 +8,15 @@ import { getUserNameFromLocalStorage } from "./modules/getUserNameFromLocalStora
 import { getUserIdFromLocalStorage } from "./modules/getUserIdFromLocalStorage.js"
 import { constructList } from "./modules/constructList.js"
 import { UserSocketIdToLocalStorage } from "./modules/UserSocketIdToLocalStorage.js"
+import { selectChatroom } from "./modules/selectChatroom.js"
 
 export const socket = io()
-//  hidden form 
+//  /*hidden form 
 export const hiddenIdField = document.querySelector('#userID')
 const fileUpload = document.querySelector('#fileupload')
 export const hiddenUsernameField = document.querySelector('#hiddenusername')
 const fileSubmitButton = document.querySelector('#submitFile')
+// */
 const uploadProfPicButton = document.querySelector('#uploadButton')
 const darkmode = document.querySelector('#darkmode')
 const friendsButton = document.querySelector('#friendsButton')
@@ -24,13 +26,13 @@ export const groupList = document.querySelector('#groupList')
 const saveButton = document.querySelector('#saveButton')
 const editButton = document.querySelector('#editButton')
 export const username = document.querySelector('#username')
-const uploadProfilePictureButton = document.querySelector('#uploadButton')
 export const textTypingArea = document.querySelector('#typingArea')
 export const selectedChatRoom = document.querySelector('#selectedChatRoom')
 const team1 = document.querySelector('#joinTeam1')
 setUserIdOnLocalStorage() //does not set if exists
 
 socket.emit('message',{name:getUserNameFromLocalStorage(),id:getUserIdFromLocalStorage(),type:'connection'}) 
+socket.emit('message',{type:'list'})
 darkmode.addEventListener('click',e=>{
     socket.emit('message',{type:'list'})
 })
@@ -56,9 +58,15 @@ saveButton.addEventListener('click',e=>{
 // })
 friendList.addEventListener('click',e=>{
     //console.log(e.target.closest('li[data-socketId]').dataset.socketid)
-    //createnewchatinhtml
-    socket.emit('message',{type:'One:One convo',mainUserSocketId:localStorage.socketId, otherUserSocketId:e.target.closest('li[data-socketId]').dataset.socketid})
-    selectedChatRoom.innerHTML = e.target.closest('li[data-socketId]').dataset.socketid
+    //createnewchatTabinhtml
+    socket.emit('message',{
+        type:'One:One convo',
+        mainUserSocketId:localStorage.socketId, 
+        otherUserSocketId:e.target.closest('li[data-socketId]').dataset.socketid,
+        userId:localStorage.id,
+        otherUserId:e.target.closest('li[data-userLocalId]').dataset.userlocalid
+    })
+    
 })
 
 team1.addEventListener('click',e=>{
@@ -99,7 +107,7 @@ groupsButton.addEventListener('click',e=>{
 })
 
 textTypingArea.addEventListener('keyup',e=>{
-    console.log(e.key)
+    // console.log(e.key)
     if(e.key === 'Enter'){
         outgoingTextMessage()
     }
@@ -112,7 +120,7 @@ socket.on('message',res=>{
     if(responseType === 'connection') UserSocketIdToLocalStorage(res.socketId)
     if(responseType === 'chat-message') incomingTextMessage(res)
     if(responseType === 'list') constructList(res)
-    // if(responseType === 'list')
+    if(responseType === 'selectedRoom')selectChatroom(res.room)
     // if(responseType === 'history')
 })
 

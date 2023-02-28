@@ -9,7 +9,7 @@ export function constructList(res){
         if(user.id !== localStorage.id){
             if(user.connectionStatus.status==='online')
                 friendList.innerHTML+=`
-                <li class="listItemsContainer" data-socketId='${user.socketId}'>  
+                <li class="listItemsContainer" data-socketId='${user.socketId}' data-userLocalId='${user.id}'>  
                     <div id="imgContainerList">
                         <img src=${user.profilePicturePathname} id="listUserIcon" alt=""> 
                         <div id=${user.connectionStatus.status}></div>
@@ -34,7 +34,7 @@ export function constructList(res){
                 else
                     timeOffline =String(user.connectionStatus.offlineDifference.minutes)+ 'm'
                 friendList.innerHTML+=`
-                <li class="listItemsContainer">  
+                <li class="listItemsContainer" data-id='${user.id}>  
                     <div id="imgContainerList">
                         <img src=${user.profilePicturePathname} id="listUserIcon" alt=""> 
                         <div id=${user.connectionStatus.status}></div>

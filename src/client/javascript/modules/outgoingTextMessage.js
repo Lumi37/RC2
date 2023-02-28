@@ -6,8 +6,7 @@ export function outgoingTextMessage(){
         id : localStorage.id,
         textMessage : textTypingArea.value,
         type : 'chat-message',
-        messageTo:selectedChatRoom.innerHTML,
-        messageFrom:localStorage.socketId
+        messageTo:selectedChatRoom.innerHTML
     })
     textTypingArea.value = ''
 }
