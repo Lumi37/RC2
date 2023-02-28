@@ -3,13 +3,14 @@ import fileUpload  from 'express-fileupload'
 import lodash from 'lodash'
 import { Server } from 'socket.io'
 import http from 'http'
-import { logLastSentMessage } from '../client/javascript/modules/logLastSentMessage.js'
+import { logLastSentMessage } from './modules/logLastSentMessage.js'
 import { identifyTypeOfRequest } from './modules/identifyTypeOfRequest.js'
 import { identifyUserById } from './modules/identifyUserById.js'
 import { handleUploadedFile } from './modules/handleUploadedFile.js'
 import { disconnectTimeCapture } from './modules/disconnectTimeCapture.js'
 import {disconnectedTimeUpdate} from './modules/disconnectedTimeUpdate.js'
 import { refreshListOnAllClients } from './modules/refreshListOnAllClient.js'
+import { registerRoom } from './modules/registerRoom.js'
 
 const app = express()
 const server = http.createServer(app)
@@ -38,8 +39,7 @@ export let  userList = [{
     profilePicturePathname:'',
     socketId:''
 }]
-let oneToOneRooms= []
-let roomIndex = 0
+export let oneToOneRooms= []             
 
 
 io.on('connection',socket=>{
@@ -84,7 +84,6 @@ io.on('connection',socket=>{
             userRequest.profilePicturePathname = userList[listIndex].profilePicturePathname
             refreshListOnAllClients(socket)
             if(userRequest.messageTo){
-                console.log('drown ',userRequest.messageTo)
                 socket.to(userRequest.messageTo).emit('message',userRequest)
             }else{
                 socket.emit('message',userRequest) 
@@ -102,32 +101,9 @@ io.on('connection',socket=>{
         }
         if(requestType === 'One:One convo'){
             const listIndex = userList.findIndex(user => user.id === socket.userID)
-            let privateRoomName 
-            console.log('U-->',userRequest.userId)
-            console.log('O-->',userRequest.otherUserId)
-            console.log(oneToOneRooms.includes(userRequest.userId+':'+userRequest.otherUserId),'\n*option 1: ',privateRoomName)
-            console.log(oneToOneRooms.includes(userRequest.otherUserId+':'+userRequest.userId),'\n*option 2: ',privateRoomName)
-            if(oneToOneRooms.filter(e=> e.room === userRequest.userId+':'+userRequest.otherUserId).length>0){
-                privateRoomName = userRequest.userId+':'+userRequest.otherUserId
-                console.log('option 1: ',privateRoomName)
-            }
-            else if(oneToOneRooms.filter(e=> e.room === userRequest.otherUserId+':'+userRequest.userId).length>0) {
-                privateRoomName = userRequest.otherUserId+':'+userRequest.userId
-                console.log('option 2: ',privateRoomName)
-            }
-            else{
-                privateRoomName = userRequest.userId+':'+userRequest.otherUserId
-                oneToOneRooms.push({room:privateRoomName,receivers:[ userRequest.userId, userRequest.otherUserId]})
-                console.log('option 3: ',privateRoomName)
-            }
+            const privateRoomName = registerRoom(userRequest) 
             socket.join(privateRoomName)
             socket.emit('message',{room:privateRoomName,type:'selectedRoom'})
-            console.log('REGISTERED ROOMS')
-            oneToOneRooms.forEach((e)=>{console.log(e)})
-            console.log('nigger',oneToOneRooms.filter(e=>{
-                e.room === privateRoomName
-            }))
-            //socket.join(userRequest.mainUserSocketId)
         }
      })
     socket.on('disconnect',()=>{

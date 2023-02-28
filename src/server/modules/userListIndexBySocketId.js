@@ -1,5 +1,6 @@
-import { userList } from "../server.js";
+// import { userList } from "../server.js";
 
-export function userListIndex(){
-    const listIndex = userList.findIndex(user => user.id === socket.userID)
-}
+// export function userListIndex(){
+//     const listIndex = userList.findIndex(user => user.id === socket.userID)
+//     return listIndex
+// }
