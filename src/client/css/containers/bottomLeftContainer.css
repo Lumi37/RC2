@@ -80,14 +80,14 @@
     background-color: #9b9b9c;
 }
 .groupList{
-    background-color: blue;
+    display : none;
 } 
 
-/* .friendList{
-    background-color: red;
-}
+/* 
+.friendList{
+} */
 
- #listUserIcon {
+ /*#listUserIcon {
     width: 3.5rem;
     height: 3.5rem;
     opacity: 1;
@@ -106,7 +106,7 @@
     grid-template-rows: auto auto;
     place-items: center;
 }
-.listItemsContainer {
+.friendListItemsContainer {
     display: grid;
     padding-bottom: 1rem;
     position: relative;
@@ -118,13 +118,13 @@
     transition: border 0.2s;
 }
 
-.listItemsContainer>div {
+.friendListItemsContainer>div {
     padding-top: 0.625rem;
     padding-bottom: 0.625rem;
     padding-left: 0.625rem;
 }
 
-.listItemsContainer:hover {
+.friendListItemsContainer:hover {
     border-right: 0.625rem solid rgb(138, 138, 255);
 }
 #imgContainerList {
@@ -202,3 +202,51 @@
     position: absolute;
 } */
 
+#groupLastMessage{
+    
+        color: #0594ad;
+        font-size: 1rem;
+        width: min-content;
+        padding-left: 3.125rem;
+    
+}
+/* #groupList{
+} */
+.groupListItemsContainer {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 1rem;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+    cursor: pointer;
+    border: 0.063rem solid rgb(0, 248, 255,33%);
+    transition: border 0.2s;
+}
+
+.groupListItemsContainer>div {
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+    padding-left: 0.625rem;
+}
+
+.groupListItemsContainer:hover {
+    border-right: 0.625rem solid rgb(138, 138, 255);
+}
+#groupListName{
+    font-size: 2rem;
+}
+#newGroup{
+    color: cyan;
+    border:none;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+}
+#newGroup:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+.newGroup{
+    display: flex;
+    justify-content: center;
+}

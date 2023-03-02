@@ -1,17 +1,17 @@
-import { userList,oneToOneRooms } from "../server.js";
+import { rooms } from "../server.js"
 export function registerRoom(userRequest){
-    let privateRoomName
-    if(oneToOneRooms.filter(e=> e.room === userRequest.userId+':'+userRequest.otherUserId).length>0){
-        privateRoomName = userRequest.userId+':'+userRequest.otherUserId
-        return privateRoomName
-    }
-    else if(oneToOneRooms.filter(e=> e.room === userRequest.otherUserId+':'+userRequest.userId).length>0) {
-        privateRoomName = userRequest.otherUserId+':'+userRequest.userId
-        return privateRoomName
-    }
-    else{
-        privateRoomName = userRequest.userId+':'+userRequest.otherUserId
-        oneToOneRooms.push({room:privateRoomName,receivers:[ userRequest.userId, userRequest.otherUserId]})
-        return privateRoomName
-    }
+
+        rooms.push({
+             room:userRequest.room,
+             creator:{
+                 name:userRequest.creator.name,
+                 id:userRequest.creator.id
+             },
+             lastMessage:{
+                name:'',
+                text:''
+             }
+        })
+        return userRequest.room
+
 }

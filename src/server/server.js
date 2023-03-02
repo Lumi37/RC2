@@ -10,6 +10,7 @@ import { handleUploadedFile } from './modules/handleUploadedFile.js'
 import { disconnectTimeCapture } from './modules/disconnectTimeCapture.js'
 import {disconnectedTimeUpdate} from './modules/disconnectedTimeUpdate.js'
 import { refreshListOnAllClients } from './modules/refreshListOnAllClient.js'
+import { registerOneToOneRoom } from './modules/registerOneToOneRoom.js'
 import { registerRoom } from './modules/registerRoom.js'
 
 const app = express()
@@ -39,27 +40,30 @@ export let  userList = [{
     profilePicturePathname:'',
     socketId:''
 }]
-export let oneToOneRooms= []             
+export let oneToOneRooms= [] 
+export let rooms = [{
+    room:'global',
+    creator:{
+        name:'',
+        id:''
+    },
+    lastMessage:{
+        name:'',
+        text:''
+    }
+}]            
 
 
 io.on('connection',socket=>{
-    // const users = [];
-    // for (let [id, socket] of io.of("/").sockets) {
-    //   users.push({
-    //     userID: id,
-    //   });
-    //   users.forEach(user=>{console.log(user.id)})
-    // }
-    //socket.broadcast.emit(`'message',{type:'new-user'}`)
-    //socket.broadcast.emit('message',{type:list})
-    // //socket.emit('message', {type:history})
-    // console.log(socket.id)
+    let currentRoom = 'global'
+    socket.join(currentRoom)
+    socket.emit('message',{room:currentRoom,type:'selectedRoom'})
     socket.on('message',(userRequest)=>{
         console.log(userRequest)
         let requestType = identifyTypeOfRequest(userRequest.type)
         console.log('TYPE OF REQUEST --->',requestType)
 
-        // Enabling status to 'Online'
+        // Setting status to 'Online'
         if(requestType === 'connection'){
             identifyUserById(userRequest.name, userRequest.id) // logs new user if id does not match
             socket.userID = userRequest.id
@@ -86,8 +90,7 @@ io.on('connection',socket=>{
             if(userRequest.messageTo){
                 socket.to(userRequest.messageTo).emit('message',userRequest)
             }else{
-                socket.emit('message',userRequest) 
-                socket.broadcast.emit('message',userRequest)
+                console.log('ERROR - > ',userList.messageTo,':',currentRoom)
             }
                 
         }
@@ -95,19 +98,21 @@ io.on('connection',socket=>{
             disconnectedTimeUpdate()
             userList.socketId = socket.id
             refreshListOnAllClients(socket)
-        }if(requestType === 'team1'){
-            socket.join('team1')
-            socket.to('team1').emit('message',{textMessage:`hello Mr.${userRequest.name} welcome to team1`,type:'chat-message' ,room:'team1'})
         }
         if(requestType === 'One:One convo'){
             const listIndex = userList.findIndex(user => user.id === socket.userID)
-            const privateRoomName = registerRoom(userRequest) 
-            socket.join(privateRoomName)
-            socket.emit('message',{room:privateRoomName,type:'selectedRoom'})
+            socket.leave(currentRoom)
+            currentRoom = registerOneToOneRoom(userRequest) 
+            socket.join(currentRoom)
+            socket.emit('message',{room:currentRoom,type:'selectedRoom'})
+        }
+        if(requestType==='newGroup'){
+            registerRoom(userRequest) 
         }
      })
     socket.on('disconnect',()=>{
         const listIndex = userList.findIndex(user =>user.id === socket.userID) //finding userList index by relative (custom)socket id
+       //Setting status to offline
         if(listIndex!==-1){
             userList[listIndex].connectionStatus.status = 'offline'
             userList[listIndex].connectionStatus.date = disconnectTimeCapture()

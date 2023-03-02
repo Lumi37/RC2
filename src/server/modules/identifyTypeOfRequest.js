@@ -12,8 +12,8 @@ export function identifyTypeOfRequest(type){
             return 'history'
         case 'One:One convo':
             return 'One:One convo'
-        case 'team1':
-            return 'team1'
+        case 'newGroup':
+            return 'newGroup'
         default:
             console.log('Uknown type : ',type)
     }

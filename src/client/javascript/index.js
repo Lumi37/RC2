@@ -17,18 +17,18 @@ const fileUpload = document.querySelector('#fileupload')
 export const hiddenUsernameField = document.querySelector('#hiddenusername')
 const fileSubmitButton = document.querySelector('#submitFile')
 // */
+const newGroupButton = document.querySelector('#newGroup')
 const uploadProfPicButton = document.querySelector('#uploadButton')
 const darkmode = document.querySelector('#darkmode')
 const friendsButton = document.querySelector('#friendsButton')
 const groupsButton = document.querySelector('#groupsButton')
-export const friendList = document.querySelector('#friendList')
-export const groupList = document.querySelector('#groupList')
+export const friendList = document.querySelector('.friendList')
+export const groupList = document.querySelector('.groupList')
 const saveButton = document.querySelector('#saveButton')
 const editButton = document.querySelector('#editButton')
 export const username = document.querySelector('#username')
 export const textTypingArea = document.querySelector('#typingArea')
 export const selectedChatRoom = document.querySelector('#selectedChatRoom')
-const team1 = document.querySelector('#joinTeam1')
 setUserIdOnLocalStorage() //does not set if exists
 
 socket.emit('message',{name:getUserNameFromLocalStorage(),id:getUserIdFromLocalStorage(),type:'connection'}) 
@@ -61,20 +61,12 @@ friendList.addEventListener('click',e=>{
     //createnewchatTabinhtml
     socket.emit('message',{
         type:'One:One convo',
-        mainUserSocketId:localStorage.socketId, 
-        otherUserSocketId:e.target.closest('li[data-socketId]').dataset.socketid,
-        userId:localStorage.id,
-        otherUserId:e.target.closest('li[data-userLocalId]').dataset.userlocalid
+        mainUserSocketId: localStorage.socketId, 
+        otherUserSocketId: e.target.closest('li[data-socketId]').dataset.socketid,
+        userId: localStorage.id,
+        otherUserId: e.target.closest('li[data-userLocalId]').dataset.userlocalid
     })
     
-})
-
-team1.addEventListener('click',e=>{
-    socket.emit('message',{
-        name : localStorage.name,
-        id : localStorage.id,
-        type : 'team1'
-    })
 })
 
 username.addEventListener('keypress',e=>{
@@ -111,6 +103,18 @@ textTypingArea.addEventListener('keyup',e=>{
     if(e.key === 'Enter'){
         outgoingTextMessage()
     }
+})
+newGroupButton.addEventListener('click',e=>{
+    let roomName = prompt('Enter New Group name: ')
+    socket.emit('message',{
+        type: 'newGroup',
+        room: roomName,
+        creator:{
+            name: localStorage.username,
+            id: localStorage.id
+        }
+
+        })
 })
 
 

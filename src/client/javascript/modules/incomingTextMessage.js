@@ -1,6 +1,6 @@
 import { selectedChatRoom } from "../index.js"
 
-const chatDisplay = document.querySelector('#chatDisplay')
+export const chatDisplay = document.querySelector('#chatDisplay')
 export function incomingTextMessage(msg){
     console.log(msg)
     console.log('selected chatroom: ',selectedChatRoom.innerHTML,'\n sunthiki: ',(selectedChatRoom.innerHTML  === msg.messageTo))
