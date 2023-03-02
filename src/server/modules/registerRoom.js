@@ -10,7 +10,8 @@ export function registerRoom(userRequest){
              lastMessage:{
                 name:'',
                 text:''
-             }
+             },
+             members:[]
         })
         return userRequest.room
 

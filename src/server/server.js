@@ -50,7 +50,8 @@ export let rooms = [{
     lastMessage:{
         name:'',
         text:''
-    }
+    },
+    members:[]
 }]            
 
 
@@ -107,7 +108,10 @@ io.on('connection',socket=>{
             socket.emit('message',{room:currentRoom,type:'selectedRoom'})
         }
         if(requestType==='newGroup'){
-            registerRoom(userRequest) 
+            registerRoom(userRequest)
+            rooms.filter(room=>{
+                
+            })
         }
      })
     socket.on('disconnect',()=>{
