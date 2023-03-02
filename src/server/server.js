@@ -109,9 +109,14 @@ io.on('connection',socket=>{
         }
         if(requestType==='newGroup'){
             registerRoom(userRequest)
-            rooms.filter(room=>{
-                
-            })
+            for (let i=0; i<rooms.length; i++){
+                if(rooms[i].room === userRequest.room){
+                    rooms[i].members.push({
+                        name:userRequest.creator.name,
+                        id:userRequest.createServer.id
+                    })
+                }
+            }
         }
      })
     socket.on('disconnect',()=>{
