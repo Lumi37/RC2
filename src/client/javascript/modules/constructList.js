@@ -7,10 +7,11 @@ export function constructList(res){
     let groups = res.rooms
     friendList.innerHTML   = ''
     groupList.innerHTML = ''
-    list.shift() //first arr cell always blank
     list.forEach(user=>{ 
             if(user.id !== localStorage.id){
-                if(user.connectionStatus.status==='online')
+                console.log(user.name,':',user.connectionStatus.status ==='online')
+                if(user.connectionStatus.status==='online'){
+                alert('mpainei sto online gia ton xristi: ',user.name,':',user.connectionStatus.status ==='online')
                     friendList.innerHTML+=`
                     <li class="friendListItemsContainer" data-socketId='${user.socketId}' data-userLocalId='${user.id}'>  
                         <div id="imgContainerList">
@@ -23,6 +24,7 @@ export function constructList(res){
                         </div>
                         <div id="dateContainer"><div id="lastOnline">${user.connectionStatus.status}</div></div>
                     </li>`
+            }
                 else{
                     //TIME OFFLINE
                     let timeOffline
@@ -36,6 +38,7 @@ export function constructList(res){
                         timeOffline =String(user.connectionStatus.offlineDifference.hours)+ 'h'
                     else
                         timeOffline =String(user.connectionStatus.offlineDifference.minutes)+ 'm'
+
                     friendList.innerHTML+=`
                     <li class="friendListItemsContainer" data-id='${user.id}>  
                         <div id="imgContainerList">
@@ -62,8 +65,11 @@ export function constructList(res){
                     <div id="groupListName">${group.room}</div>
                     <div id="groupLastMessage">${group.lastMessage.name}:${group.lastMessage.text}</div>
                 </div>
+                <button id="joinGroup" data-group="${group.room}">join</button>
+                <button id="leaveGroup">leave</button>
             </li> `
     })
 }    
     
+{/* <div id="groupLastMessage">${group.lastMessage.name}:${group.lastMessage.text}</div> */}
  

@@ -5,6 +5,8 @@ export function getUserNameFromLocalStorage(){
     if(localStorage.name){
         username.value = localStorage.name
         hiddenUsernameField.value = localStorage.name
-    }
-    return localStorage.name
+        return localStorage.name
+    }else
+    return ''
+    
 }

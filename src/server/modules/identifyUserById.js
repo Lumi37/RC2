@@ -1,25 +1,34 @@
 import { userList,__dirname } from "../server.js";
+
 export function identifyUserById(name,id){
     console.log(`---------- IDENTIFYING USER BY ID ----------`)
-    let userExistanceOnList = false
+    let userExistenceOnList = false
     userList.forEach(user=>{
         if(user.id === id){
-            userExistanceOnList = true
+            userExistenceOnList = true
             if(user.name === name){
                 console.log(`user identified as ${user.name}`)
+                return true
             }
             else{
                 console.log(`user identified as ${name} previously known as ${user.name}`)
                 user.name = name 
+                return true
             }
         }
    })
-    if (userExistanceOnList  === false ){
+   return false
+    if (userExistenceOnList  === false ){
         if(name){
+            console.log('eimaialogo')
             userList.push({
                 name:name,
                 id:id,
-                connectionStatus:{ status:'offline', date:{years:0, months:0, days:0, hours:0, minutes:0}, offlineDifference:{years:0, months:0, days:0, hours:0, minutes:0} },
+                connectionStatus:{
+                    status:'offline', 
+                    date:{years:0, months:0, days:0, hours:0, minutes:0}, 
+                    offlineDifference:{years:0, months:0, days:0, hours:0, minutes:0} 
+                },
                 lastMessage:{ text:'', date:'' },
                 profilePicturePathname:`images/darkmode/default.png`,
                 socketId:''
@@ -30,7 +39,11 @@ export function identifyUserById(name,id){
             userList.push({
                 name:'unnamed',
                 id:id,
-                connectionStatus:{ status:'offline', date:{years:0, months:0, days:0, hours:0, minutes:0}, offlineDifference:{years:0, months:0, days:0, hours:0, minutes:0} },
+                connectionStatus:{
+                    status:'offline',
+                    date:{years:0, months:0, days:0, hours:0, minutes:0},
+                    offlineDifference:{years:0, months:0, days:0, hours:0, minutes:0}
+                 },
                 lastMessage:{ text:'', date:'' },
                 profilePicturePathname:`images/darkmode/default.png`,
                 socketId:''

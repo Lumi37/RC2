@@ -31,6 +31,7 @@ export function disconnectedTimeUpdate(){
                 timeDifference.months = (date.getMonth() + 1) - timeObject.months 
             
                 timeObject.years = date.getFullYear() - timeObject.years 
+                
             
         }
     })

@@ -10,6 +10,10 @@ export function identifyResponseByType(type){
             return 'history'
         case 'selectedRoom':
             return 'selectedRoom'
+        case 'alert':
+            return 'alert'
+        case 'error':
+            return 'error'
         default:
             console.log('Unknown type : ',type)
     }

@@ -12,6 +12,8 @@ import {disconnectedTimeUpdate} from './modules/disconnectedTimeUpdate.js'
 import { refreshListOnAllClients } from './modules/refreshListOnAllClient.js'
 import { registerOneToOneRoom } from './modules/registerOneToOneRoom.js'
 import { registerRoom } from './modules/registerRoom.js'
+import { roomExistenceByName } from './modules/roomExistenceByName.js'
+import { logUserOnList } from './modules/logUserOnList.js'
 
 const app = express()
 const server = http.createServer(app)
@@ -28,18 +30,19 @@ app.post('/',function(req,res){
 })
 
 app.use(express.static(`${__dirname}../client`))
-export let  userList = [{
-    name:'',
-    id:'', 
-    connectionStatus:{
-        status:'offline',
-        date:{ years:0, months:0, days:0, hours:0, minutes:0 },
-        offlineDifference:{ years:0, months:0, days:0, hours:0, minutes:0 }
-    }, 
-    lastMessage:{ text:'', date:'' },
-    profilePicturePathname:'',
-    socketId:''
-}]
+export let  userList =[]
+//  [{
+//     name:'',
+//     id:'', 
+//     connectionStatus:{
+//         status:'offline',
+//         date:{ years:0, months:0, days:0, hours:0, minutes:0 },
+//         offlineDifference:{ years:0, months:0, days:0, hours:0, minutes:0 }
+//     }, 
+//     lastMessage:{ text:'', date:'' },
+//     profilePicturePathname:'',
+//     socketId:''
+// }]
 export let oneToOneRooms= [] 
 export let rooms = [{
     room:'global',
@@ -59,6 +62,7 @@ io.on('connection',socket=>{
     let currentRoom = 'global'
     socket.join(currentRoom)
     socket.emit('message',{room:currentRoom,type:'selectedRoom'})
+   
     socket.on('message',(userRequest)=>{
         console.log(userRequest)
         let requestType = identifyTypeOfRequest(userRequest.type)
@@ -66,22 +70,42 @@ io.on('connection',socket=>{
 
         // Setting status to 'Online'
         if(requestType === 'connection'){
-            identifyUserById(userRequest.name, userRequest.id) // logs new user if id does not match
+            let userExistenceOnList =  identifyUserById(userRequest.name, userRequest.id)
             socket.userID = userRequest.id
+            if(!userExistenceOnList){
+                logUserOnList(userRequest.name,userRequest.id)
+                rooms[0].members.push({name:userRequest.name,id:userRequest.id}) //log user on global room obj
+            }
             const listIndex = userList.findIndex(user => user.id === socket.userID)
            try {
                 userList[listIndex].connectionStatus.status = 'online'
-                userList[listIndex].connectionStatus.date = ''
+                userList[listIndex].connectionStatus.date = {years:0, months:0, days:0, hours:0, minutes:0}
                 userList[listIndex].socketId = socket.id
 
            } catch (error) {
                 console.log(error)
            }
            socket.emit('message',{type:'connection',socketId:socket.id})
-           socket.broadcast.emit('message',{list:userList,type:'list'})
+           refreshListOnAllClients(socket)
         }
         if(requestType === 'name'){
-            identifyUserById(userRequest.name, userRequest.id)
+            let userExistenceOnList =  identifyUserById(userRequest.name, userRequest.id)
+            socket.userID = userRequest.id
+            if(!userExistenceOnList){
+                logUserOnList(userRequest.name,userRequest.id)
+                rooms[0].members.push({name:userRequest.name,id:userRequest.id}) //log user on global room obj
+            }
+            const listIndex = userList.findIndex(user => user.id === socket.userID)
+           try {
+                userList[listIndex].connectionStatus.status = 'online'
+                userList[listIndex].connectionStatus.date = {years:0, months:0, days:0, hours:0, minutes:0}
+                userList[listIndex].socketId = socket.id
+
+           } catch (error) {
+                console.log(error)
+           }
+           socket.emit('message',{type:'connection',socketId:socket.id})
+            refreshListOnAllClients(socket)
         }
         if (requestType === 'chat-message'){
             const listIndex = userList.findIndex(user => user.id === socket.userID)
@@ -101,22 +125,22 @@ io.on('connection',socket=>{
             refreshListOnAllClients(socket)
         }
         if(requestType === 'One:One convo'){
-            const listIndex = userList.findIndex(user => user.id === socket.userID)
             socket.leave(currentRoom)
             currentRoom = registerOneToOneRoom(userRequest) 
             socket.join(currentRoom)
             socket.emit('message',{room:currentRoom,type:'selectedRoom'})
         }
         if(requestType==='newGroup'){
-            registerRoom(userRequest)
-            for (let i=0; i<rooms.length; i++){
-                if(rooms[i].room === userRequest.room){
-                    rooms[i].members.push({
-                        name:userRequest.creator.name,
-                        id:userRequest.createServer.id
-                    })
+            if(userRequest.room){
+                if(roomExistenceByName(userRequest.room)) socket.emit('message',{type:'error',error:'Group already exists.'})   //if result = true the room exists send error back to client     
+                else{ 
+                    registerRoom(userRequest)
+                    socket.emit('message',{type:'alert',text:`Group: ${userRequest.room} has been created successfuly!`})
+                    refreshListOnAllClients(socket)
                 }
-            }
+            }else
+                socket.emit('message',{type:'error',error:'cannot create void name of a Group'})
+           
         }
      })
     socket.on('disconnect',()=>{

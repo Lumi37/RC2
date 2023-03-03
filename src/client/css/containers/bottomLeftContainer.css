@@ -214,7 +214,9 @@
 } */
 .groupListItemsContainer {
     display:flex;
-    align-items: center;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    /* align-items: center; */
     justify-content: center;
     padding-bottom: 1rem;
     margin-top: 0.2rem;
@@ -236,15 +238,45 @@
 #groupListName{
     font-size: 2rem;
 }
+#joinGroup{
+    color: #24b62e;
+    border:none;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+}
+#joinGroup:hover{
+    color: #00ff1e;
+    cursor: pointer;
+}
+#joinGroup:active{
+    color: #24b62e;
+}
+#leaveGroup{
+    color: #24b62e;
+    border:none;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+}
+#leaveGroup:hover{
+    color: #00ff1e;
+    cursor: pointer;
+}
+#leaveGroup:active{
+    color: #24b62e;
+}
 #newGroup{
-    color: cyan;
+    color: #24b62e;
+    font-weight: 700;
     border:none;
     background-color: Transparent;
     background-repeat:no-repeat;
 }
 #newGroup:hover{
-    text-decoration: underline;
+    color: #00ff1e;
     cursor: pointer;
+}
+#newGroup:active{
+    color: #24b62e;
 }
 .newGroup{
     display: flex;

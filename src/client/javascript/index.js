@@ -7,7 +7,7 @@ import { setUserIdOnLocalStorage } from "./modules/setUserIdOnLocalStorage.js"
 import { getUserNameFromLocalStorage } from "./modules/getUserNameFromLocalStorage.js"
 import { getUserIdFromLocalStorage } from "./modules/getUserIdFromLocalStorage.js"
 import { constructList } from "./modules/constructList.js"
-import { UserSocketIdToLocalStorage } from "./modules/UserSocketIdToLocalStorage.js"
+import { userSocketIdToLocalStorage } from "./modules/userSocketIdToLocalStorage.js"
 import { selectChatroom } from "./modules/selectChatroom.js"
 
 export const socket = io()
@@ -29,10 +29,15 @@ const editButton = document.querySelector('#editButton')
 export const username = document.querySelector('#username')
 export const textTypingArea = document.querySelector('#typingArea')
 export const selectedChatRoom = document.querySelector('#selectedChatRoom')
+const joinGroup = document.querySelector('#joinGroup')
+const leaveGroup = document.querySelector('#leaveGroup') 
 setUserIdOnLocalStorage() //does not set if exists
-
-socket.emit('message',{name:getUserNameFromLocalStorage(),id:getUserIdFromLocalStorage(),type:'connection'}) 
-socket.emit('message',{type:'list'})
+console.log(localStorage.name)
+if(localStorage.name){
+    socket.emit('message', { name:localStorage.name, id:localStorage.id, type:'connection'}) 
+    socket.emit('message',{type:'list'})
+    username.value = localStorage.name
+}
 darkmode.addEventListener('click',e=>{
     socket.emit('message',{type:'list'})
 })
@@ -47,17 +52,13 @@ saveButton.addEventListener('click',e=>{
         setNameOnLocalStorage()
         if(username.value){
             hiddenUsernameField.value = username.value
-            socket.emit('message',{name:username.value, id:getUserIdFromLocalStorage(), type:'name'})
+            socket.emit('message',{name:username.value, id:localStorage.id, type:'name'})
             saveButton.id = 'saveButtonDisabled'
         }
     }
         
 })
-// document.querySelectorAll('.listNameMessageContainer').addEventListener('click',e=>{
-//     console.log(e.currentTarget)
-// })
 friendList.addEventListener('click',e=>{
-    //console.log(e.target.closest('li[data-socketId]').dataset.socketid)
     //createnewchatTabinhtml
     socket.emit('message',{
         type:'One:One convo',
@@ -85,7 +86,6 @@ username.addEventListener('keypress',e=>{
 // ENABLING NAME EDITING
 editButton.addEventListener('click',e=>{
     saveButton.id = 'saveButton'
-
 })
 
 friendsButton.addEventListener('click',e=>{
@@ -99,13 +99,14 @@ groupsButton.addEventListener('click',e=>{
 })
 
 textTypingArea.addEventListener('keyup',e=>{
-    // console.log(e.key)
     if(e.key === 'Enter'){
         outgoingTextMessage()
     }
 })
+
 newGroupButton.addEventListener('click',e=>{
     let roomName = prompt('Enter New Group name: ')
+    console.log(roomName)
     socket.emit('message',{
         type: 'newGroup',
         room: roomName,
@@ -113,18 +114,26 @@ newGroupButton.addEventListener('click',e=>{
             name: localStorage.username,
             id: localStorage.id
         }
-
-        })
+    })
 })
 
+groupList.addEventListener('click',e=>{
+   // if()
+   console.log(e.target.tagName)
+    console.log(e.target.dataset.group)
+    socket.emit('message',{type:'joinGroup', room:e.target.dataset.group})
+})
 
+//HANDLING RESPONSES 
 socket.on('message',res=>{
     const responseType = identifyResponseByType(res.type)
     console.log(res.type)
-    if(responseType === 'connection') UserSocketIdToLocalStorage(res.socketId)
+    if(responseType === 'connection') userSocketIdToLocalStorage(res.socketId)
     if(responseType === 'chat-message') incomingTextMessage(res)
     if(responseType === 'list') constructList(res)
     if(responseType === 'selectedRoom')selectChatroom(res.room)
+    if(responseType === 'alert')alert(res.text)
+    if(responseType === 'error')alert(res.error)
     // if(responseType === 'history')
 })
 
