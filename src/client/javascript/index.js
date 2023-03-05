@@ -29,8 +29,6 @@ const editButton = document.querySelector('#editButton')
 export const username = document.querySelector('#username')
 export const textTypingArea = document.querySelector('#typingArea')
 export const selectedChatRoom = document.querySelector('#selectedChatRoom')
-const joinGroup = document.querySelector('#joinGroup')
-const leaveGroup = document.querySelector('#leaveGroup') 
 setUserIdOnLocalStorage() //does not set if exists
 console.log(localStorage.name)
 if(localStorage.name){
@@ -76,7 +74,7 @@ username.addEventListener('keypress',e=>{
             if(username.value){
                 setNameOnLocalStorage()
                 hiddenUsernameField.value = username.value
-                socket.emit('message',{name:username.value, id:getUserIdFromLocalStorage(), type:'name'})
+                socket.emit('message',{name:username.value, id:localStorage.id, type:'name'})
                 saveButton.id = 'saveButtonDisabled'
             }
         }
@@ -118,10 +116,11 @@ newGroupButton.addEventListener('click',e=>{
 })
 
 groupList.addEventListener('click',e=>{
-   // if()
-   console.log(e.target.tagName)
-    console.log(e.target.dataset.group)
-    socket.emit('message',{type:'joinGroup', room:e.target.dataset.group})
+    if( e.target.tagName === 'BUTTON' && e.target.dataset.groupaction === 'join' ){
+        socket.emit('message',{type:'joinGroup', room:e.target.dataset.group, name:localStorage.name, id:localStorage.id})
+
+   }
+      // socket.emit('message',{type:'joinGroup', room:e.target.dataset.group, name:localStorage.name, id:localStorage.id})
 })
 
 //HANDLING RESPONSES 

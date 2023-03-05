@@ -15,4 +15,5 @@ export function registerRoom(userRequest){
                 id:userRequest.creator.id
             }]
     })
+    return userRequest.room
 }

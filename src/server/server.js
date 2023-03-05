@@ -14,6 +14,7 @@ import { registerOneToOneRoom } from './modules/registerOneToOneRoom.js'
 import { registerRoom } from './modules/registerRoom.js'
 import { roomExistenceByName } from './modules/roomExistenceByName.js'
 import { logUserOnList } from './modules/logUserOnList.js'
+import { userExistenceOnRoom } from './modules/userExistenceOnRoom.js'
 
 const app = express()
 const server = http.createServer(app)
@@ -103,6 +104,7 @@ io.on('connection',socket=>{
 
            } catch (error) {
                 console.log(error)
+                socket.emit('message',{type:'error', error:error})
            }
            socket.emit('message',{type:'connection',socketId:socket.id})
             refreshListOnAllClients(socket)
@@ -135,12 +137,27 @@ io.on('connection',socket=>{
                 if(roomExistenceByName(userRequest.room)) socket.emit('message',{type:'error',error:'Group already exists.'})   //if result = true the room exists send error back to client     
                 else{ 
                     registerRoom(userRequest)
+                    socket.leave(currentRoom)
+                    currentRoom  = userRequest.room
                     socket.emit('message',{type:'alert',text:`Group: ${userRequest.room} has been created successfuly!`})
                     refreshListOnAllClients(socket)
+                    socket.emit('message',{room:currentRoom,type:'selectedRoom'})
+
                 }
             }else
-                socket.emit('message',{type:'error',error:'cannot create void name of a Group'})
-           
+                socket.emit('message',{type:'alert', text:'cannot create void name of a Group'})
+        }
+        if(requestType === 'joinGroup'){
+            let exists = userExistenceOnRoom(userRequest)
+            if(exists)
+                socket.emit('message', { type:'alert', text:`you are already a member of this group: ${userRequest.room}`})
+            else{
+                socket.leave(currentRoom)
+                currentRoom = userRequest.room
+                socket.join(currentRoom)
+                socket.emit('message',{room:currentRoom,type:'selectedRoom'})
+                //create new tab socket.emit('message', newtab)
+            }
         }
      })
     socket.on('disconnect',()=>{

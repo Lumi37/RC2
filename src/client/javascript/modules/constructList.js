@@ -6,14 +6,10 @@ export function constructList(res){
     let list = res.userList
     let groups = res.rooms
     friendList.innerHTML   = ''
-    console.log('list eraser')
     groupList.innerHTML = ''
     list.forEach(user=>{ 
             if(user.id !== localStorage.id){
-                console.log(user.name,':',user.connectionStatus.status ==='online')
                 if(user.connectionStatus.status==='online'){
-                    console.log('IF pou shmainei oti user.connectionStatus.status==="online" TRUE!! ')
-                // alert('mpainei sto online gia ton xristi: ',user.name,':',user.connectionStatus.status ==='online')
                     friendList.innerHTML+=`
                     <li class="friendListItemsContainer" data-socketId='${user.socketId}' data-userLocalId='${user.id}'>  
                         <div id="imgContainerList">
@@ -40,7 +36,6 @@ export function constructList(res){
                         timeOffline =String(user.connectionStatus.offlineDifference.hours)+ 'h'
                     else
                         timeOffline =String(user.connectionStatus.offlineDifference.minutes)+ 'm'
-                    console.log('ELSE pou shmainei oti user.connectionStatus.status==="online" NOT TRUE \n',timeOffline,' <--')
                     friendList.innerHTML+=`
                     <li class="friendListItemsContainer" data-userLocalId='${user.id}'>  
                         <div id="imgContainerList">
@@ -71,11 +66,9 @@ export function constructList(res){
                     <div id="groupListName">${group.room}</div>
                     <div id="groupLastMessage">${group.lastMessage.name}:${group.lastMessage.text}</div>
                 </div>
-                <button id="joinGroup" data-group="${group.room}">join</button>
-                <button id="leaveGroup">leave</button>
+                <button id="joinGroup" data-group="${group.room}" data-groupAction="join">join</button>
+                <button id="leaveGroup" data-group="${group.room}" data-groupAction="leave">leave</button>
             </li> `
     })
 }    
     
-{/* <div id="groupLastMessage">${group.lastMessage.name}:${group.lastMessage.text}</div> */}
- 

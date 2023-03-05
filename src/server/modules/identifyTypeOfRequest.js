@@ -14,6 +14,8 @@ export function identifyTypeOfRequest(type){
             return 'One:One convo'
         case 'newGroup':
             return 'newGroup'
+        case 'joinGroup':
+            return 'joinGroup'
         default:
             console.log('Uknown type : ',type)
     }
