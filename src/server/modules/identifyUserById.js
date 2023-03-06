@@ -1,7 +1,7 @@
-import { userList,__dirname } from "../server.js";
+import { userList } from "../server.js";
 
 export function identifyUserById(name,id){
-    console.log(`---------- IDENTIFYING USER BY ID ----------`)
+    console.log(`---------- identifyUserById ----------`)
     let userExistenceOnList = false
     userList.forEach(user=>{
         if(user.id === id){
@@ -18,41 +18,41 @@ export function identifyUserById(name,id){
         }
    })
    return false
-    if (userExistenceOnList  === false ){
-        if(name){
-            console.log('eimaialogo')
-            userList.push({
-                name:name,
-                id:id,
-                connectionStatus:{
-                    status:'offline', 
-                    date:{years:0, months:0, days:0, hours:0, minutes:0}, 
-                    offlineDifference:{years:0, months:0, days:0, hours:0, minutes:0} 
-                },
-                lastMessage:{ text:'', date:'' },
-                profilePicturePathname:`images/darkmode/default.png`,
-                socketId:''
-            })
-            console.log(`New User \nNAME: ${name}\nID: ${id}`)
-        }
-        else{
-            userList.push({
-                name:'unnamed',
-                id:id,
-                connectionStatus:{
-                    status:'offline',
-                    date:{years:0, months:0, days:0, hours:0, minutes:0},
-                    offlineDifference:{years:0, months:0, days:0, hours:0, minutes:0}
-                 },
-                lastMessage:{ text:'', date:'' },
-                profilePicturePathname:`images/darkmode/default.png`,
-                socketId:''
+    // if (userExistenceOnList  === false ){
+    //     if(name){
+    //         console.log('eimaialogo')
+    //         userList.push({
+    //             name:name,
+    //             id:id,
+    //             connectionStatus:{
+    //                 status:'offline', 
+    //                 date:{years:0, months:0, days:0, hours:0, minutes:0}, 
+    //                 offlineDifference:{years:0, months:0, days:0, hours:0, minutes:0} 
+    //             },
+    //             lastMessage:{ text:'', date:'' },
+    //             profilePicturePathname:`images/darkmode/default.png`,
+    //             socketId:''
+    //         })
+    //         console.log(`New User \nNAME: ${name}\nID: ${id}`)
+    //     }
+    //     else{
+    //         userList.push({
+    //             name:'unnamed',
+    //             id:id,
+    //             connectionStatus:{
+    //                 status:'offline',
+    //                 date:{years:0, months:0, days:0, hours:0, minutes:0},
+    //                 offlineDifference:{years:0, months:0, days:0, hours:0, minutes:0}
+    //              },
+    //             lastMessage:{ text:'', date:'' },
+    //             profilePicturePathname:`images/darkmode/default.png`,
+    //             socketId:''
 
-            })
-            console.log(`New User \nNAME: unnamed\nID: ${id}`)
-        }
-    }
-    console.log(`\n\n`)
+    //         })
+    //         console.log(`New User \nNAME: unnamed\nID: ${id}`)
+    //     }
+    // }
+    // console.log(`\n\n`)
 }
 
 

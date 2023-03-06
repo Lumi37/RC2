@@ -4,9 +4,9 @@ export function outgoingTextMessage(){
     socket.emit('message',{
         name : localStorage.name,
         id : localStorage.id,
-        textMessage : textTypingArea.value,
+        text : textTypingArea.value,
         type : 'chat-message',
-        messageTo:selectedChatRoom.innerHTML
+        room:selectedChatRoom.innerHTML
     })
     chatDisplay.innerHTML += `
     <div class="userTextWrap">

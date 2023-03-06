@@ -1,6 +1,8 @@
 import { userList } from "../server.js";
 
 export function disconnectedTimeUpdate(){
+    console.log(`----------  disconnectedTimeUpdate ----------`)
+
     let date = new Date()
     let timeObject
     let timeDifference 

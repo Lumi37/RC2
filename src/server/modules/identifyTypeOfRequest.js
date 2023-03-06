@@ -16,6 +16,8 @@ export function identifyTypeOfRequest(type){
             return 'newGroup'
         case 'joinGroup':
             return 'joinGroup'
+        case 'currentGroup':
+            return 'currentGroup'
         default:
             console.log('Uknown type : ',type)
     }

@@ -1,5 +1,6 @@
 import { userList } from "../server.js"
 export function logUserOnList(name,id){
+    console.log(`---------- logUserOnList ----------`)
         
             userList.push({
                 name:name,
@@ -11,7 +12,8 @@ export function logUserOnList(name,id){
                 },
                 lastMessage:{ text:'', date:'' },
                 profilePicturePathname:`images/darkmode/default.png`,
-                socketId:''
+                socketId:'',
+                groupMemberOf:['global']
             })
             console.log(`New User \nNAME: ${name}\nID: ${id}`)        
 }

@@ -22,7 +22,7 @@ export function constructList(res){
                         </div>
                         <div id="dateContainer"><div id="lastOnline">${user.connectionStatus.status}</div></div>
                     </li>`
-            }
+                }
                 else{
                     //TIME OFFLINE
                     let timeOffline
@@ -57,7 +57,7 @@ export function constructList(res){
     })
     groups.forEach(group=>{
         groupList.innerHTML+=`
-            <li class="groupListItemsContainer">  
+            <li class="groupListItemsContainer" data-group=${group.room}>  
                 <div id="imgContainerList">
                     <img src="images/darkmode/default.png" id="listUserIcon" alt=""> 
                     <div id="online"></div>

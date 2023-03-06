@@ -9,6 +9,7 @@ import { getUserIdFromLocalStorage } from "./modules/getUserIdFromLocalStorage.j
 import { constructList } from "./modules/constructList.js"
 import { userSocketIdToLocalStorage } from "./modules/userSocketIdToLocalStorage.js"
 import { selectChatroom } from "./modules/selectChatroom.js"
+import { chatHistory } from "./modules/chatHistory.js"
 
 export const socket = io()
 //  /*hidden form 
@@ -118,10 +119,11 @@ newGroupButton.addEventListener('click',e=>{
 groupList.addEventListener('click',e=>{
     if( e.target.tagName === 'BUTTON' && e.target.dataset.groupaction === 'join' ){
         socket.emit('message',{type:'joinGroup', room:e.target.dataset.group, name:localStorage.name, id:localStorage.id})
-
-   }
-      // socket.emit('message',{type:'joinGroup', room:e.target.dataset.group, name:localStorage.name, id:localStorage.id})
+    }
+    else
+        socket.emit('message',{type:'currentGroup', room:e.target.closest('li[data-group]').dataset.group, name:localStorage.name, id:localStorage.id})
 })
+
 
 //HANDLING RESPONSES 
 socket.on('message',res=>{
@@ -129,10 +131,10 @@ socket.on('message',res=>{
     console.log(res.type)
     if(responseType === 'connection') userSocketIdToLocalStorage(res.socketId)
     if(responseType === 'chat-message') incomingTextMessage(res)
+    if(responseType === 'history')chatHistory(res)
     if(responseType === 'list') constructList(res)
     if(responseType === 'selectedRoom')selectChatroom(res.room)
     if(responseType === 'alert')alert(res.text)
     if(responseType === 'error')alert(res.error)
-    // if(responseType === 'history')
 })
 

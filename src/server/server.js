@@ -15,7 +15,9 @@ import { registerRoom } from './modules/registerRoom.js'
 import { roomExistenceByName } from './modules/roomExistenceByName.js'
 import { logUserOnList } from './modules/logUserOnList.js'
 import { userExistenceOnRoom } from './modules/userExistenceOnRoom.js'
-
+import { subscribeMemberToRoom } from './modules/subscribeMemberToRoom.js'
+import { logHistoryOnRoom } from './modules/logHistoryOnRoom.js'
+import { currentRoomHistory } from './modules/currentRoomHistory.js'
 const app = express()
 const server = http.createServer(app)
 export const __dirname = new URL('.', import.meta.url).pathname
@@ -43,6 +45,7 @@ export let  userList =[]
 //     lastMessage:{ text:'', date:'' },
 //     profilePicturePathname:'',
 //     socketId:''
+//     groupMemberOf:['global',etc] 
 // }]
 export let oneToOneRooms= [] 
 export let rooms = [{
@@ -51,11 +54,9 @@ export let rooms = [{
         name:'',
         id:''
     },
-    lastMessage:{
-        name:'',
-        text:''
-    },
-    members:[]
+    lastMessage:{},
+    members:[],
+    history:[]
 }]            
 
 
@@ -87,6 +88,7 @@ io.on('connection',socket=>{
                 console.log(error)
            }
            socket.emit('message',{type:'connection',socketId:socket.id})
+           socket.emit('message',{type:'history', historyArray:currentRoomHistory(currentRoom,listIndex)})
            refreshListOnAllClients(socket)
         }
         if(requestType === 'name'){
@@ -102,7 +104,7 @@ io.on('connection',socket=>{
                 userList[listIndex].connectionStatus.date = {years:0, months:0, days:0, hours:0, minutes:0}
                 userList[listIndex].socketId = socket.id
 
-           } catch (error) {
+           }catch (error) {
                 console.log(error)
                 socket.emit('message',{type:'error', error:error})
            }
@@ -111,15 +113,15 @@ io.on('connection',socket=>{
         }
         if (requestType === 'chat-message'){
             const listIndex = userList.findIndex(user => user.id === socket.userID)
-            logLastSentMessage(listIndex, userRequest.textMessage)
+            logLastSentMessage(listIndex, userRequest.text)
             userRequest.profilePicturePathname = userList[listIndex].profilePicturePathname
             refreshListOnAllClients(socket)
-            if(userRequest.messageTo){
-                socket.to(userRequest.messageTo).emit('message',userRequest)
+            if(userRequest.room){
+                logHistoryOnRoom(userRequest)
+                socket.to(userRequest.room).emit('message',userRequest)
             }else{
-                console.log('ERROR - > ',userList.messageTo,':',currentRoom)
+                console.log('ERROR - > ',userList.room,':',currentRoom)
             }
-                
         }
         if(requestType === 'list'){
             disconnectedTimeUpdate()
@@ -127,16 +129,20 @@ io.on('connection',socket=>{
             refreshListOnAllClients(socket)
         }
         if(requestType === 'One:One convo'){
+            const listIndex = userList.findIndex(user => user.id === socket.userID)
             socket.leave(currentRoom)
             currentRoom = registerOneToOneRoom(userRequest) 
             socket.join(currentRoom)
             socket.emit('message',{room:currentRoom,type:'selectedRoom'})
+            socket.emit('message',{type:'history',historyArray:currentRoomHistory(currentRoom,listIndex)})
         }
         if(requestType==='newGroup'){
+            let listIndex = userList.findIndex(user =>user.id === socket.userID)
             if(userRequest.room){
-                if(roomExistenceByName(userRequest.room)) socket.emit('message',{type:'error',error:'Group already exists.'})   //if result = true the room exists send error back to client     
+                if(roomExistenceByName(userRequest.room)) socket.emit('message',{type:'alert',text:'Group already exists.'})   //if result = true the room exists send error back to client     
                 else{ 
                     registerRoom(userRequest)
+                    subscribeMemberToRoom(userRequest.room,listIndex)
                     socket.leave(currentRoom)
                     currentRoom  = userRequest.room
                     socket.emit('message',{type:'alert',text:`Group: ${userRequest.room} has been created successfuly!`})
@@ -148,15 +154,29 @@ io.on('connection',socket=>{
                 socket.emit('message',{type:'alert', text:'cannot create void name of a Group'})
         }
         if(requestType === 'joinGroup'){
+            let listIndex = userList.findIndex(user =>user.id === socket.userID)
             let exists = userExistenceOnRoom(userRequest)
             if(exists)
                 socket.emit('message', { type:'alert', text:`you are already a member of this group: ${userRequest.room}`})
             else{
                 socket.leave(currentRoom)
+                subscribeMemberToRoom(userRequest.room,listIndex)
                 currentRoom = userRequest.room
                 socket.join(currentRoom)
                 socket.emit('message',{room:currentRoom,type:'selectedRoom'})
+                socket.emit('message',{type:'history', historyArray:currentRoomHistory(currentRoom,listIndex)})
                 //create new tab socket.emit('message', newtab)
+            }
+        }
+        if(requestType === 'currentGroup'){
+            let exists = userExistenceOnRoom(userRequest)
+            if(exists){
+                console.log(userRequest.name,':',currentRoom)
+                socket.leave(currentRoom)
+                currentRoom = userRequest.room
+                socket.join(currentRoom)
+                socket.emit('message',{room:currentRoom,type:'selectedRoom'})
+                socket.emit('message',{type:'history', historyArray:currentRoomHistory(currentRoom,listIndex)})
             }
         }
      })
@@ -170,11 +190,9 @@ io.on('connection',socket=>{
             userList[listIndex].socketId=''
         }
         refreshListOnAllClients(socket)
-        //socket.broadcast.emit('message',{type:list} disconnected user
     })
 })
 
-// io.to('team1').emit('message',{textMessage:'hello team1',type:'message'})
 
 
 
