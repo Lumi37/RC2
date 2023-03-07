@@ -12,6 +12,8 @@ export function identifyResponseByType(type){
             return 'selectedRoom'
         case 'alert':
             return 'alert'
+        case 'displaySelectedRoom':
+            return 'displaySelectedRoom'
         case 'error':
             return 'error'
         default:

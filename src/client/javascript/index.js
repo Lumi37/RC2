@@ -10,6 +10,7 @@ import { constructList } from "./modules/constructList.js"
 import { userSocketIdToLocalStorage } from "./modules/userSocketIdToLocalStorage.js"
 import { selectChatroom } from "./modules/selectChatroom.js"
 import { chatHistory } from "./modules/chatHistory.js"
+import { showChosenGroup } from "./modules/showChosenGroup.js"
 
 export const socket = io()
 //  /*hidden form 
@@ -134,6 +135,7 @@ socket.on('message',res=>{
     if(responseType === 'history')chatHistory(res)
     if(responseType === 'list') constructList(res)
     if(responseType === 'selectedRoom')selectChatroom(res.room)
+    if(responseType === 'displaySelectedRoom')showChosenGroup(res)
     if(responseType === 'alert')alert(res.text)
     if(responseType === 'error')alert(res.error)
 })

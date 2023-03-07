@@ -18,6 +18,8 @@ import { userExistenceOnRoom } from './modules/userExistenceOnRoom.js'
 import { subscribeMemberToRoom } from './modules/subscribeMemberToRoom.js'
 import { logHistoryOnRoom } from './modules/logHistoryOnRoom.js'
 import { currentRoomHistory } from './modules/currentRoomHistory.js'
+import { getOnlineUsers } from './modules/getOnlineUsers.js'
+import { getOnlineUsersOfGroup } from './modules/getOnlineUsersOfGroup.js'
 const app = express()
 const server = http.createServer(app)
 export const __dirname = new URL('.', import.meta.url).pathname
@@ -172,10 +174,14 @@ io.on('connection',socket=>{
             let exists = userExistenceOnRoom(userRequest)
             if(exists){
                 console.log(userRequest.name,':',currentRoom)
+                let listIndex = userList.findIndex(user =>user.id === socket.userID)
+                let room = rooms.find(room=> room.room === userRequest.room )
                 socket.leave(currentRoom)
                 currentRoom = userRequest.room
+                
                 socket.join(currentRoom)
                 socket.emit('message',{room:currentRoom,type:'selectedRoom'})
+                socket.emit('message', { roomObj:room, onlineUsers:getOnlineUsersOfGroup(room,getOnlineUsers()), type:'displaySelectedRoom'})
                 socket.emit('message',{type:'history', historyArray:currentRoomHistory(currentRoom,listIndex)})
             }
         }
